@@ -1,0 +1,28 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefHeight="200.0" prefWidth="400.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- VBox on the left side -->
+        <VBox fx:id="leftBox" alignment="TOP_LEFT" prefWidth="150.0" styleClass="left-box" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <!-- Text shape in the middle of the left VBox -->
+                <Text text="Welcome" fill="WHITE" />
+            </children>
+        </VBox>
+
+        <!-- Group containing username, password fields, and login button -->
+        <VBox fx:id="loginGroup" spacing="10" padding="10" alignment="CENTER_LEFT" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <TextField fx:id="usernameField" styleClass="text-field" />
+                <PasswordField fx:id="passwordField" styleClass="password-field" />
+                <Button fx:id="loginButton" text="Login" styleClass="login-button" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

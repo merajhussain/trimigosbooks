@@ -1,0 +1,15 @@
+.options-pane {
+    -fx-background-color: #99ccff;
+}
+
+.option-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+}
+
+.option-button:hover {
+    -fx-background-color: #0056b3;
+}

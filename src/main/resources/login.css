@@ -1,0 +1,43 @@
+/* AnchorPane styling */
+.login-pane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* TextField styling */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Left VBox styling */
+.left-box {
+
+    -fx-background-color: indigo;
+     -fx-pref-width: 150px;
+       -fx-min-width: 150px;
+
+}
+
+/* PasswordField styling */
+.password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Button styling */
+.login-button {
+    -fx-background-color:#FFD700;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+}
+
+/* Hover effect for Button */
+.login-button:hover {
+    -fx-background-color: #4B0082b3;
+}
