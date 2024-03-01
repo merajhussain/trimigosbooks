@@ -38,14 +38,12 @@ public class LoginView {
         SplitPane root = new SplitPane();
         root.setDividerPositions(0.15); // Set the divider position to 15% (left pane)
 
-        // Left side with indigo color
+        // Left side pane to hold label and logo
         Pane leftPane = new Pane();
         leftPane.setId("left-box"); // Set ID for left pane
 
-
+        //Add logo and text shape to the left pane
         AddTextShapeToPane(leftPane);
-
-
 
         // Right side with login form
         VBox rightBox = new VBox(20);
@@ -90,7 +88,7 @@ public class LoginView {
 
     public void setOnLoginButtonClicked(Runnable handler) {
         loginButton.setOnAction(e -> handler.run());
-        
+
         // Add an event filter for the Enter key press event
         loginButton.getParent().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -123,7 +121,7 @@ public class LoginView {
 
 
         FontAwesomeIconView bookIcon = new FontAwesomeIconView(FontAwesomeIcon.BOOK);
-        bookIcon.setFill(Color.WHITE);
+        bookIcon.setFill(Color.DARKGRAY);
         bookIcon.setSize("2em");
         bookIcon.setLayoutX((leftPane.getWidth() - bookIcon.getBoundsInLocal().getWidth()) / 2);
         bookIcon.setLayoutY(text.getBoundsInLocal().getHeight()); // Position the icon just below the text
