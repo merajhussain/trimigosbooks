@@ -47,7 +47,8 @@ public class DashBoardView {
         optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, option4Button);
         root.setLeft(optionsPane);
 
-        VBox tableViewContainer = new VBox(10);
+        VBox tableViewContainer = new VBox(20);
+        tableViewContainer.setPadding(new Insets(40)); // Set padding for the VBox
         tableViewContainer.getStyleClass().add("table-view-container");
 
         // Create a label and TableView in each VBox
