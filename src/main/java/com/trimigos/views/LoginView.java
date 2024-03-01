@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -88,6 +90,14 @@ public class LoginView {
 
     public void setOnLoginButtonClicked(Runnable handler) {
         loginButton.setOnAction(e -> handler.run());
+        
+        // Add an event filter for the Enter key press event
+        loginButton.getParent().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                handler.run();
+                event.consume(); // Consume the event to prevent further processing
+            }
+        });
     }
 
     public void close() {
