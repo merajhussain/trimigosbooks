@@ -41,7 +41,7 @@ public class DashBoardView {
         option2Button.getStyleClass().add("option-button");
         Button option3Button = new Button("Reports");
         option3Button.getStyleClass().add("option-button");
-        Button option4Button = new Button("Option 4");
+        Button option4Button = new Button("Sales");
         option4Button.getStyleClass().add("option-button");
 
         optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, option4Button);

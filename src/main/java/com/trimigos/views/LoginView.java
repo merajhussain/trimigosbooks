@@ -61,6 +61,13 @@ public class LoginView {
         loginButton = new Button("Login");
         loginButton.setId("login-button");
 
+        // Set the icon view as the graphic for the login button
+        FontAwesomeIconView loginIconView = new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN);
+        loginIconView.setSize("2em"); // Set icon size
+        loginIconView.setFill(Color.WHITE); // Set icon color
+        loginButton.setGraphic(loginIconView);
+
+
         rightBox.getChildren().addAll(usernameField, passwordField, loginButton);
 
         // Add panes to the SplitPane
