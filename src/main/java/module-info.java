@@ -2,6 +2,11 @@ module com.trimigos.trimigosbooks {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires de.jensd.fx.glyphs.commons;
+    requires de.jensd.fx.glyphs.fontawesome;
+    requires javafx.graphics;
+    requires java.logging;
+
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -9,6 +14,7 @@ module com.trimigos.trimigosbooks {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+
 
     opens com.trimigos to javafx.fxml;
     exports com.trimigos;

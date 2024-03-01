@@ -1,21 +1,25 @@
 package com.trimigos.views;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
-import javafx.scene.layout.AnchorPane;
 
 public class LoginView {
     private Stage stage;
@@ -26,56 +30,54 @@ public class LoginView {
     public LoginView(Stage stage) {
         this.stage = stage;
         stage.setTitle("Login");
+        this.stage = stage;
+        stage.setTitle("Login");
+        // Create a SplitPane
+        SplitPane root = new SplitPane();
+        root.setDividerPositions(0.15); // Set the divider position to 15% (left pane)
 
-        AnchorPane root = new AnchorPane();
-        root.getStyleClass().add("login-pane");
-        Scene scene = new Scene(root, 400, 200);
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("login.css").toExternalForm());
-        stage.setScene(scene);
+        // Left side with indigo color
+        Pane leftPane = new Pane();
+        leftPane.setId("left-box"); // Set ID for left pane
 
-        // VBox on the left side
-        VBox leftBox = new VBox(10);
-        leftBox.getStyleClass().add("left-box");
-        leftBox.setAlignment(Pos.TOP_LEFT); // Align to top left
 
-        // Text shape in the middle of the left VBox
-        Text text = new Text("Welcome");
-        text.setFill(Color.WHITE);
+        AddTextShapeToPane(leftPane);
 
-        leftBox.getChildren().addAll(  text); // Add transparent rectangle to create space
 
-        AnchorPane.setTopAnchor(leftBox, 50.0);
-        AnchorPane.setLeftAnchor(leftBox, 50.0);
 
-        // Group containing username, password fields, and login button
-        VBox loginGroup = new VBox(10);
-        loginGroup.setPadding(new Insets(10));
-        loginGroup.setAlignment(Pos.CENTER_LEFT);
+        // Right side with login form
+        VBox rightBox = new VBox(20);
+        rightBox.setAlignment(Pos.CENTER);
+        rightBox.setPadding(new Insets(20));
 
         usernameField = new TextField();
-        usernameField.getStyleClass().add("text-field");
+        usernameField.setPromptText("Username");
+        usernameField.setId("text-field");
 
         passwordField = new PasswordField();
-        passwordField.getStyleClass().add("password-field");
+        passwordField.setPromptText("Password");
+        passwordField.setId("password-field ");
 
         loginButton = new Button("Login");
-        loginButton.getStyleClass().add("login-button");
+        loginButton.setId("login-button");
 
-        loginGroup.getChildren().addAll(usernameField, passwordField, loginButton);
+        rightBox.getChildren().addAll(usernameField, passwordField, loginButton);
 
-        AnchorPane.setTopAnchor(loginGroup, 50.0);
-        AnchorPane.setLeftAnchor(loginGroup, 220.0); // Adjust left anchor to position on the right side of the VBox
+        // Add panes to the SplitPane
+        root.getItems().addAll(leftPane, rightBox);
 
-        VBox.setVgrow(leftBox, Priority.ALWAYS);
+        // Load the CSS file
+        Scene scene = new Scene(root, 400, 200);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("login.css").toExternalForm());
 
-        // Add leftBox and loginGroup to the root AnchorPane
-        root.getChildren().addAll(leftBox, loginGroup);
+        stage.setScene(scene);
+
     }
-
 
     public void show() {
         stage.show();
     }
+
     public String getUsername() {
         return usernameField.getText();
     }
@@ -91,4 +93,46 @@ public class LoginView {
     public void close() {
         stage.close();
     }
+
+    private void AddTextShapeToPane(Pane leftPane) {
+
+        Text text = new Text("Trimigos Books");
+        text.setId("welcome-text"); // Set ID for text
+        text.setFont(Font.font(18));
+
+        // Listen for changes in the size of the left pane and update the position of the text accordingly
+        leftPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double textWidth = text.getLayoutBounds().getWidth();
+            text.setLayoutX((newWidth.doubleValue() - textWidth) / 2);
+        });
+
+        leftPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double textHeight = text.getLayoutBounds().getHeight();
+            text.setLayoutY((newHeight.doubleValue() + textHeight) / 2);
+        });
+
+
+        FontAwesomeIconView bookIcon = new FontAwesomeIconView(FontAwesomeIcon.BOOK);
+        bookIcon.setFill(Color.WHITE);
+        bookIcon.setSize("2em");
+        bookIcon.setLayoutX((leftPane.getWidth() - bookIcon.getBoundsInLocal().getWidth()) / 2);
+        bookIcon.setLayoutY(text.getBoundsInLocal().getHeight()); // Position the icon just below the text
+
+        text.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+                double centerX = newValue.getMinX() + newValue.getWidth() / 2;
+                double iconX = centerX - bookIcon.getBoundsInParent().getWidth() / 2;
+                double iconY = newValue.getMinY() - bookIcon.getBoundsInParent().getHeight() - 5; // 5 pixels gap
+                bookIcon.setLayoutX(iconX);
+                bookIcon.setLayoutY(iconY);
+            }
+        });
+
+        // Add the text shape to the left pane
+        leftPane.getChildren().addAll(bookIcon,text);
+
+
+    }
+
 }
