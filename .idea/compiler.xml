@@ -6,10 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TrimigosBooks" />
+        <module name="javafx-project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="javafx-project" target="17" />
       <module name="TrimigosBooks" target="17" />
     </bytecodeTargetLevel>
   </component>

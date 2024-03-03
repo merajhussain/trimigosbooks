@@ -6,7 +6,7 @@ import com.trimigos.controllers.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class TrimigosBooks extends Application {
+public class trimigosbooks extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         LoginModel loginModel = new LoginModel();

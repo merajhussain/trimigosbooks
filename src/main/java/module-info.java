@@ -17,6 +17,7 @@ module com.trimigos.trimigosbooks {
 
 
     opens com.trimigos to javafx.fxml;
+
     exports com.trimigos;
     exports com.trimigos.controllers;
     exports com.trimigos.models;
