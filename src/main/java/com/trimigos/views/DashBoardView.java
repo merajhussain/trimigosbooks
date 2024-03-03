@@ -1,6 +1,8 @@
 package com.trimigos.views;
 
 import com.trimigos.models.DataEntity;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class DashBoardView {
@@ -41,8 +44,13 @@ public class DashBoardView {
         option2Button.getStyleClass().add("option-button");
         Button option3Button = new Button("Reports");
         option3Button.getStyleClass().add("option-button");
-        Button option4Button = new Button("Sales");
+        Button option4Button = new Button("Logout");
         option4Button.getStyleClass().add("option-button");
+
+        addStyleToButton(option1Button,FontAwesomeIcon.LIST,Color.DARKGRAY);
+        addStyleToButton(option2Button,FontAwesomeIcon.HOME,Color.DARKGRAY);
+        addStyleToButton(option3Button,FontAwesomeIcon.PRINT,Color.DARKGRAY);
+        addStyleToButton(option4Button,FontAwesomeIcon.SIGN_OUT,Color.DARKGRAY);
 
         optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, option4Button);
         root.setLeft(optionsPane);
@@ -106,6 +114,17 @@ public class DashBoardView {
 
         return tableView;
     }
+
+
+    private void addStyleToButton(Button loginButton, FontAwesomeIcon icon, Color fillfolor)
+    {
+        FontAwesomeIconView loginIconView = new FontAwesomeIconView(icon);
+        loginIconView.setSize("2em"); // Set icon size
+        loginIconView.setFill(fillfolor); // Set icon color
+        loginButton.setGraphic(loginIconView);
+
+    }
+
 
     public void show() {
         stage.show();

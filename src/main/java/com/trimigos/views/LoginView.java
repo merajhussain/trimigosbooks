@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -32,6 +33,8 @@ public class LoginView {
     public LoginView(Stage stage) {
         this.stage = stage;
         stage.setTitle("TrimigoBooks-Login");
+
+
 
         // Create a SplitPane
         SplitPane root = new SplitPane();
@@ -150,7 +153,7 @@ public class LoginView {
     {
         FontAwesomeIconView loginIconView = new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN);
         loginIconView.setSize("2em"); // Set icon size
-        loginIconView.setFill(Color.WHITE); // Set icon color
+        loginIconView.setFill(fillfolor); // Set icon color
         loginButton.setGraphic(loginIconView);
 
     }
