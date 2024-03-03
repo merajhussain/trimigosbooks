@@ -31,9 +31,8 @@ public class LoginView {
 
     public LoginView(Stage stage) {
         this.stage = stage;
-        stage.setTitle("Login");
-        this.stage = stage;
-        stage.setTitle("Login");
+        stage.setTitle("TrimigoBooks-Login");
+
         // Create a SplitPane
         SplitPane root = new SplitPane();
         root.setDividerPositions(0.15); // Set the divider position to 15% (left pane)
@@ -62,10 +61,7 @@ public class LoginView {
         loginButton.setId("login-button");
 
         // Set the icon view as the graphic for the login button
-        FontAwesomeIconView loginIconView = new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN);
-        loginIconView.setSize("2em"); // Set icon size
-        loginIconView.setFill(Color.WHITE); // Set icon color
-        loginButton.setGraphic(loginIconView);
+        addStyleToButton(loginButton,FontAwesomeIcon.SIGN_IN,Color.WHITE);
 
 
         rightBox.getChildren().addAll(usernameField, passwordField, loginButton);
@@ -147,6 +143,15 @@ public class LoginView {
         // Add the text shape to the left pane
         leftPane.getChildren().addAll(bookIcon,text);
 
+
+    }
+
+    private void addStyleToButton(Button loginButton,FontAwesomeIcon icon,Color fillfolor)
+    {
+        FontAwesomeIconView loginIconView = new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN);
+        loginIconView.setSize("2em"); // Set icon size
+        loginIconView.setFill(Color.WHITE); // Set icon color
+        loginButton.setGraphic(loginIconView);
 
     }
 
