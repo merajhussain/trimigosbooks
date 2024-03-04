@@ -1,8 +1,12 @@
 package com.trimigos.views;
 
+import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
+import com.trimigos.models.OrderEntity;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,13 +21,32 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class DashBoardView {
     private Stage stage;
 
-    public DashBoardView() {
+    ObservableList<OrderEntity> orders;
+    private Timeline orderUpdateTimeLine;
+
+
+    public void setModel(DashBoardModel model) {
+        this.model = model;
+    }
+
+    private DashBoardModel model;
+    TableView<OrderEntity> ordersTableView;
+
+
+
+
+    public DashBoardView( DashBoardModel dashboardModel) {
+
         stage = new Stage();
         stage.setTitle("Dashboard");
+
+        this.model = dashboardModel;
+        
 
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 800, 600);
@@ -65,13 +88,13 @@ public class DashBoardView {
         tableView1Label.getStyleClass().add("section-label");
         tableView1Box.getChildren().addAll(tableView1Label, createTableView());
 
-        VBox tableView2Box = new VBox(10);
+        VBox ordersViewBox = new VBox(10);
         Label tableView2Label = new Label("Orders to Deliver");
         tableView2Label.getStyleClass().add("section-label");
-        tableView2Box.getChildren().addAll(tableView2Label, createTableView());
+        ordersViewBox.getChildren().addAll(tableView2Label, createOrderTableView());
 
         HBox row1 = new HBox(10);
-        row1.getChildren().addAll(tableView1Box, tableView2Box);
+        row1.getChildren().addAll(tableView1Box, ordersViewBox);
 
 
         VBox tableView3Box = new VBox(10);
@@ -89,7 +112,14 @@ public class DashBoardView {
 
         tableViewContainer.getChildren().addAll(row1, row2);
 
+        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateDashBoardViewTables( )));
+
+        orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
+
+        orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
+
+
     }
 
     private TableView<DataEntity> createTableView( ) {
@@ -116,17 +146,58 @@ public class DashBoardView {
     }
 
 
-    private void addStyleToButton(Button loginButton, FontAwesomeIcon icon, Color fillfolor)
+
+
+    private void addStyleToButton(Button button, FontAwesomeIcon icon, Color fillfolor)
     {
-        FontAwesomeIconView loginIconView = new FontAwesomeIconView(icon);
-        loginIconView.setSize("2em"); // Set icon size
-        loginIconView.setFill(fillfolor); // Set icon color
-        loginButton.setGraphic(loginIconView);
+        FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
+        iconView.setSize("2em"); // Set icon size
+        iconView.setFill(fillfolor); // Set icon color
+        button.setGraphic(iconView);
 
     }
 
 
+
+    public TableView<OrderEntity> createOrderTableView()
+    {
+        this.ordersTableView = new TableView<>();
+
+        TableColumn<OrderEntity, String> nameColumn = new TableColumn<>("CustomerName");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+
+        TableColumn<OrderEntity, Integer> idColumn = new TableColumn<>("OrderId");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+
+        TableColumn<OrderEntity, String> locColumn = new TableColumn<>("Location");
+        locColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+
+        ordersTableView.getColumns().addAll(nameColumn, idColumn,locColumn);
+
+        orders = FXCollections.observableArrayList(
+                model.getAllOrders()
+        );
+
+        ordersTableView.setItems(orders);
+
+
+
+
+        return ordersTableView;
+    }
+
     public void show() {
         stage.show();
+    }
+
+    public void updateDashBoardViewTables( )
+    {
+
+            ordersTableView.getItems().clear();
+
+            ordersTableView.setItems(model.getPendingOrder());
+
+
     }
 }

@@ -12,6 +12,8 @@ public class trimigosbooks extends Application {
         LoginModel loginModel = new LoginModel();
         LoginView loginView = new LoginView(primaryStage);
         new LoginController(loginModel, loginView);
+
+
         loginView.show();
     }
 

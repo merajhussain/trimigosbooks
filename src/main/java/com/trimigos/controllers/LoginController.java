@@ -24,7 +24,7 @@ public class LoginController {
             view.close();
             // Show Dashboard
             DashBoardModel dashboardModel = new DashBoardModel();
-            DashBoardView dashboardView = new DashBoardView();
+            DashBoardView dashboardView = new DashBoardView(dashboardModel);
             new DashBoardController(dashboardModel, dashboardView);
              dashboardView.show();
         } else {
