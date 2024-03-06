@@ -11,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -123,20 +124,12 @@ public class DashBoardView {
         orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
 
-        logoutButton.setOnAction(e->{
-
-            orderUpdateTimeLine.stop(); // stop the order poller
-
-            LoginModel loginModel = new LoginModel();
-            LoginView loginView = new LoginView(this.stage);
-            new LoginController(loginModel, loginView);
-
-            loginView.show();
-
-        });
+        logoutButton.setOnAction(this::logout);
 
 
     }
+
+
 
     private TableView<DataEntity> createTableView( ) {
         TableView<DataEntity> tableView = new TableView<>();
@@ -215,5 +208,17 @@ public class DashBoardView {
             ordersTableView.setItems(model.getPendingOrder());
 
 
+    }
+
+
+    private void logout(ActionEvent actionEvent)
+    {
+        orderUpdateTimeLine.stop(); // stop the order poller
+
+        LoginModel loginModel = new LoginModel();
+        LoginView loginView = new LoginView(this.stage);
+        new LoginController(loginModel, loginView);
+
+        loginView.show();
     }
 }
