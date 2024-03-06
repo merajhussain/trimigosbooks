@@ -1,7 +1,9 @@
 package com.trimigos.views;
 
+import com.trimigos.controllers.LoginController;
 import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
+import com.trimigos.models.LoginModel;
 import com.trimigos.models.OrderEntity;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -67,15 +69,17 @@ public class DashBoardView {
         option2Button.getStyleClass().add("option-button");
         Button option3Button = new Button("Reports");
         option3Button.getStyleClass().add("option-button");
-        Button option4Button = new Button("Logout");
-        option4Button.getStyleClass().add("option-button");
+        Button logoutButton = new Button("Logout");
+        logoutButton.getStyleClass().add("option-button");
 
         addStyleToButton(option1Button,FontAwesomeIcon.LIST,Color.DARKGRAY);
         addStyleToButton(option2Button,FontAwesomeIcon.HOME,Color.DARKGRAY);
         addStyleToButton(option3Button,FontAwesomeIcon.PRINT,Color.DARKGRAY);
-        addStyleToButton(option4Button,FontAwesomeIcon.SIGN_OUT,Color.DARKGRAY);
+        addStyleToButton(logoutButton,FontAwesomeIcon.SIGN_OUT,Color.DARKGRAY);
 
-        optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, option4Button);
+
+
+        optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, logoutButton);
         root.setLeft(optionsPane);
 
         VBox tableViewContainer = new VBox(20);
@@ -118,6 +122,18 @@ public class DashBoardView {
 
         orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
+
+        logoutButton.setOnAction(e->{
+
+            orderUpdateTimeLine.stop(); // stop the order poller
+
+            LoginModel loginModel = new LoginModel();
+            LoginView loginView = new LoginView(this.stage);
+            new LoginController(loginModel, loginView);
+
+            loginView.show();
+
+        });
 
 
     }
