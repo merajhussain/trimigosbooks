@@ -215,8 +215,10 @@ public class DashBoardView {
     {
         orderUpdateTimeLine.stop(); // stop the order poller
 
+        stage.close();
+
         LoginModel loginModel = new LoginModel();
-        LoginView loginView = new LoginView(this.stage);
+        LoginView loginView = new LoginView(new Stage());
         new LoginController(loginModel, loginView);
 
         loginView.show();
