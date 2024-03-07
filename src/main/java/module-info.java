@@ -15,6 +15,7 @@ module com.trimigos.trimigosbooks {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires com.google.gson;
 
 
     opens com.trimigos to javafx.fxml;

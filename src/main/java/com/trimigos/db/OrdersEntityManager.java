@@ -75,7 +75,7 @@ public class OrdersEntityManager {
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next())
                 {
-                     int orderId = resultSet.getInt("orderid");
+                    String orderId = resultSet.getString("orderid");
                     String customer_name = resultSet.getString(":customer_name");
                     String location = resultSet.getString(":location");
                     boolean pending =  (resultSet.getInt("pending") ==0)?true:false;
@@ -116,7 +116,7 @@ public class OrdersEntityManager {
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next())
                 {
-                    int orderId = resultSet.getInt("orderid");
+                    String orderId = resultSet.getString("orderid");
                     String customer_name = resultSet.getString("customer_name");
                     String location = resultSet.getString("location");
 
@@ -180,6 +180,34 @@ public class OrdersEntityManager {
 
         } catch (SQLException e) {
             System.out.println("Error clearing orders table");
+            e.printStackTrace();
+        }
+    }
+
+    public void AddOrder(String orderId,String customerName,String location) {
+        String insertQuery = "INSERT OR REPLACE INTO Orders (orderid,customer_name,location,pending) VALUES (?,?,?,?)";
+        Connection conn=null;
+        // Create a PreparedStatement
+        try {
+
+            Class.forName("org.sqlite.JDBC");
+            // db parameters
+            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+
+            preparedStatement.setString(1,orderId);
+            preparedStatement.setString(2, customerName);
+            preparedStatement.setString(3, location);
+            preparedStatement.setInt(4, 1);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Order persisted successfully for the customer "+customerName);
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Error updating data in SQLite database.");
             e.printStackTrace();
         }
     }

@@ -9,11 +9,11 @@ public class OrderEntity {
         this.customerName = customerName;
     }
 
-    public int getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
@@ -26,12 +26,12 @@ public class OrderEntity {
     }
 
     private String customerName;
-    private int orderID;
+    private String orderID;
     private String location;
     private boolean pendingOrder;
 
 
-    public OrderEntity(String customerName, int orderID,String location, boolean pendingOrder) {
+    public OrderEntity(String customerName, String orderID,String location, boolean pendingOrder) {
         this.customerName = customerName;
         this.orderID = orderID;
         this.location = location;

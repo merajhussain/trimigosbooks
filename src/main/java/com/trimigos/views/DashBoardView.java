@@ -5,12 +5,15 @@ import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
 import com.trimigos.models.LoginModel;
 import com.trimigos.models.OrderEntity;
+import com.trimigos.web.OrderPuller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,11 +29,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class DashBoardView {
     private Stage stage;
 
     ObservableList<OrderEntity> orders;
     private Timeline orderUpdateTimeLine;
+
+
 
 
     public void setModel(DashBoardModel model) {
@@ -117,12 +126,16 @@ public class DashBoardView {
 
         tableViewContainer.getChildren().addAll(row1, row2);
 
-        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateDashBoardViewTables( )));
+       orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables( )));
 
-        orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
+       orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
 
-        orderUpdateTimeLine.play();
+       orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
+
+
+
+
 
         logoutButton.setOnAction(this::logout);
 
@@ -175,7 +188,7 @@ public class DashBoardView {
         TableColumn<OrderEntity, String> nameColumn = new TableColumn<>("CustomerName");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 
-        TableColumn<OrderEntity, Integer> idColumn = new TableColumn<>("OrderId");
+        TableColumn<OrderEntity, String> idColumn = new TableColumn<>("OrderId");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
 
         TableColumn<OrderEntity, String> locColumn = new TableColumn<>("Location");
@@ -200,12 +213,33 @@ public class DashBoardView {
         stage.show();
     }
 
-    public void updateDashBoardViewTables( )
+     public void updateDashBoardViewTables( )
     {
 
-            ordersTableView.getItems().clear();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Perform time-consuming task in background thread
+                OrderPuller orderPuller = new OrderPuller();
+                orderPuller.pullOrders();
+                return null;
+            }
+        };
 
-            ordersTableView.setItems(model.getPendingOrder());
+        // Set up the task completion handler to update the UI
+        task.setOnSucceeded(event -> {
+            // Update the UI on the JavaFX Application Thread
+            Platform.runLater(() -> {
+                ordersTableView.getItems().clear();
+                ordersTableView.setItems(model.getPendingOrder());
+            });
+        });
+
+        // Start the task in a background thread
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // Daemonize the thread to prevent it from blocking application shutdown
+        thread.start();
+
 
 
     }
@@ -215,6 +249,9 @@ public class DashBoardView {
     {
         orderUpdateTimeLine.stop(); // stop the order poller
 
+
+        OrderPuller orderPuller = new OrderPuller();
+        orderPuller.clearOrdersFromServer();
         stage.close();
 
         LoginModel loginModel = new LoginModel();

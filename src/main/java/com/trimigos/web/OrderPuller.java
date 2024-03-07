@@ -1,0 +1,133 @@
+package com.trimigos.web;
+
+import com.trimigos.db.OrdersEntityManager;
+import com.trimigos.models.OrderEntity;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+public class OrderPuller {
+
+    private List<OrderEntity> orders;
+
+    public  void pullOrders( ) {
+        try {
+            // Define the URL
+            String urlString = "https://woozy-ubiquitous-comet.glitch.me/messages";
+            URL url = new URL(urlString);
+
+            // Create HttpURLConnection object
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set request method to GET
+            connection.setRequestMethod("GET");
+
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Read the response
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder orderRequest = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                orderRequest.append(inputLine);
+            }
+            in.close();
+
+            // Print the response
+            System.out.println("Response: " + orderRequest.toString());
+
+            ProcessOrder(orderRequest);
+
+            // Close the connection
+            connection.disconnect();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ProcessOrder(StringBuilder orderRequest)
+    {
+
+        Gson gson = new Gson();
+
+
+        // Parse JSON array
+        JsonArray jsonArray = gson.fromJson(orderRequest.toString(), JsonArray.class);
+        for (JsonElement element : jsonArray) {
+            JsonObject jsonObject = element.getAsJsonObject();
+            String orderId = jsonObject.get("orderId").getAsString();
+            String orderMessage = jsonObject.get("message").getAsString();
+            System.out.println("Order ID: " + orderId);
+            System.out.println("Message: " + orderMessage);
+
+            String [] orders = orderMessage.split(" ");
+
+
+
+                if( orders.length == 3)
+                {
+
+
+                    String  location =  orders[1];
+                    String customerOrder = orders[2];
+
+                    String replacecustomerOrder =customerOrder.replaceAll("\\\n","_");
+
+                    String [] splitCucsomterOrder = replacecustomerOrder.split("_");
+
+                    String customerName = splitCucsomterOrder[0];
+
+
+
+                    OrdersEntityManager ordersEntityManager = new OrdersEntityManager();
+
+                    ordersEntityManager.AddOrder(orderId,customerName,location);
+
+                }
+
+
+
+
+        }
+
+
+    }
+
+
+
+    public  void clearOrdersFromServer( ) {
+        try {
+            // Define the URL
+            String urlString = "https://woozy-ubiquitous-comet.glitch.me/clearmessages";
+            URL url = new URL(urlString);
+
+            // Create HttpURLConnection object
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set request method to GET
+            connection.setRequestMethod("POST");
+
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+
+            // Close the connection
+            connection.disconnect();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
