@@ -59,10 +59,38 @@ public class OrderPuller {
     private void ProcessOrder(StringBuilder orderRequest)
     {
 
+       //Order format
+
+        /*
+        Order HYDERABAD MERAJ
+        Item1
+        Item2
+        Item3
+         */
+
+
+
+        /*
+
+            JSON Response from webhook Server
+
+            [
+               {
+                   "orderId": "0e0962a9-8308-4952-b2cf-b243ce295280",
+                   "message": "Order HYD SALMAN\nItem1\nItem2\nItem3"
+               },
+               {
+                      "orderId": "c6bc91e8-5f00-468c-a0ae-656d3f1a5043",
+                       "message": "Order KDP SARKAR\nItem1\nItem2\nItem3"
+                },
+               {
+                     "orderId": "2463e7d5-47dc-40b6-ab17-5e28683055f2",
+                     "message": "Order HYDERABAD MERAJ\nItem1\nItem2\nItem3"
+               }
+]
+        */
         Gson gson = new Gson();
 
-
-        // Parse JSON array
         JsonArray jsonArray = gson.fromJson(orderRequest.toString(), JsonArray.class);
         for (JsonElement element : jsonArray) {
             JsonObject jsonObject = element.getAsJsonObject();
@@ -74,10 +102,8 @@ public class OrderPuller {
             String [] orders = orderMessage.split(" ");
 
 
-
                 if( orders.length == 3)
                 {
-
 
                     String  location =  orders[1];
                     String customerOrder = orders[2];
@@ -88,8 +114,6 @@ public class OrderPuller {
 
                     String customerName = splitCucsomterOrder[0];
 
-
-
                     OrdersEntityManager ordersEntityManager = new OrdersEntityManager();
 
                     ordersEntityManager.AddOrder(orderId,customerName,location);
@@ -97,10 +121,7 @@ public class OrderPuller {
                 }
 
 
-
-
         }
-
 
     }
 
