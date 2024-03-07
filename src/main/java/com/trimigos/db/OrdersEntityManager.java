@@ -25,7 +25,7 @@ public class OrdersEntityManager {
     /**
      * Connect to Orders database
      */
-    public  void connect() {
+      public  void connect() {
 
         System.out.println("connect called");
         connection = null;
@@ -63,7 +63,7 @@ public class OrdersEntityManager {
     }
 
 
-   public void getAllOrders()
+    synchronized public void getAllOrders()
     {
         try
         {
@@ -94,7 +94,7 @@ public class OrdersEntityManager {
         }
     }
 
-    public void getAllPendingOrders()   {
+    synchronized  public void getAllPendingOrders()   {
         Connection conn=null;
         try
         {
@@ -135,7 +135,7 @@ public class OrdersEntityManager {
         }
     }
 
-   public void updateOrderCompleted(int orderId) {
+    synchronized public void updateOrderCompleted(int orderId) {
         String updateQuery = "UPDATE Orders SET pending = 0 where orderid =?";
         // Create a PreparedStatement
         try {
@@ -184,7 +184,7 @@ public class OrdersEntityManager {
         }
     }
 
-    public void AddOrder(String orderId,String customerName,String location) {
+    synchronized public void AddOrder(String orderId,String customerName,String location) {
         String insertQuery = "INSERT OR REPLACE INTO Orders (orderid,customer_name,location,pending) VALUES (?,?,?,?)";
         Connection conn=null;
         // Create a PreparedStatement
@@ -224,7 +224,7 @@ public class OrdersEntityManager {
 
     }
 
-    public void clearOrders()
+    synchronized  public void clearOrders()
     {
         orders.clear();
     }
