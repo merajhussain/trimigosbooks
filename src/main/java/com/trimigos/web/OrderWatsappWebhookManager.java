@@ -13,7 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class OrderPuller {
+public class OrderWatsappWebhookManager {
 
     private List<OrderEntity> orders;
 

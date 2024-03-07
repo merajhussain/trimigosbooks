@@ -5,7 +5,7 @@ import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
 import com.trimigos.models.LoginModel;
 import com.trimigos.models.OrderEntity;
-import com.trimigos.web.OrderPuller;
+import com.trimigos.web.OrderWatsappWebhookManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.KeyFrame;
@@ -28,10 +28,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class DashBoardView {
     private Stage stage;
@@ -132,10 +128,7 @@ public class DashBoardView {
 
        orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
-
-
-
-
+        
 
         logoutButton.setOnAction(this::logout);
 
@@ -220,7 +213,7 @@ public class DashBoardView {
             @Override
             protected Void call() throws Exception {
                 // Perform time-consuming task in background thread
-                OrderPuller orderPuller = new OrderPuller();
+                OrderWatsappWebhookManager orderPuller = new OrderWatsappWebhookManager();
                 orderPuller.pullOrders();
                 return null;
             }
@@ -250,7 +243,7 @@ public class DashBoardView {
         orderUpdateTimeLine.stop(); // stop the order poller
 
 
-        OrderPuller orderPuller = new OrderPuller();
+        OrderWatsappWebhookManager orderPuller = new OrderWatsappWebhookManager();
         orderPuller.clearOrdersFromServer();
         stage.close();
 
