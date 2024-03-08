@@ -35,6 +35,7 @@ public class DashBoardView {
 
     ObservableList<OrderEntity> orders;
     private Timeline orderUpdateTimeLine;
+    private static final int DOUBLE_CLICK_COUNT=2;
 
 
 
@@ -258,7 +259,7 @@ public class DashBoardView {
 
             TableRow<OrderEntity> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                if (event.getClickCount() == DOUBLE_CLICK_COUNT && !row.isEmpty()) {
                     orderUpdateTimeLine.stop();
                     System.out.println("Handling order completion");
                     OrderEntity selectedOrder = row.getItem();
