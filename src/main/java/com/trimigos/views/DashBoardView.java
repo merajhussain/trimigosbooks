@@ -1,6 +1,7 @@
 package com.trimigos.views;
 
 import com.trimigos.controllers.LoginController;
+import com.trimigos.db.OrdersEntityManager;
 import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
 import com.trimigos.models.LoginModel;
@@ -17,10 +18,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +26,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashBoardView {
     private Stage stage;
@@ -57,7 +58,7 @@ public class DashBoardView {
         
 
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("dashboard.css").toExternalForm());
         stage.setScene(scene);
 
@@ -102,6 +103,7 @@ public class DashBoardView {
         Label tableView2Label = new Label("Orders to Deliver");
         tableView2Label.getStyleClass().add("section-label");
         ordersViewBox.getChildren().addAll(tableView2Label, createOrderTableView());
+        ordersViewBox.setMaxWidth(1000);
 
         HBox row1 = new HBox(10);
         row1.getChildren().addAll(tableView1Box, ordersViewBox);
@@ -120,21 +122,41 @@ public class DashBoardView {
         HBox row2 = new HBox(10);
         row2.getChildren().addAll(tableView3Box, tableView4Box);
 
+
         tableViewContainer.getChildren().addAll(row1, row2);
+
 
        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables( )));
 
        orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
 
-       orderUpdateTimeLine.play();
+        orderUpdateTimeLine.play();
         root.setCenter(tableViewContainer);
-        
+
+
+        handleOrderViewSelection();
+
+        handleOrderCompletion();
+
 
         logoutButton.setOnAction(this::logout);
 
 
     }
 
+    private void handleOrderViewSelection() {
+        ordersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            System.out.println("Handling order Selection");
+            if (newSelection != null) {
+                orderUpdateTimeLine.stop(); // Stop the timeline when an order is selected
+
+                // Perform some operation on the selected order here
+
+                // Restart the timeline after the operation is performed
+             //   orderUpdateTimeLine.play();
+            }
+        });
+    }
 
 
     private TableView<DataEntity> createTableView( ) {
@@ -187,19 +209,71 @@ public class DashBoardView {
         TableColumn<OrderEntity, String> locColumn = new TableColumn<>("Location");
         locColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
 
+        TableColumn<OrderEntity, String> itemsColumn = new TableColumn<>("Items");
+        itemsColumn.setCellValueFactory(new PropertyValueFactory<>("items")); // Assuming 'items' property in OrderEntity
 
-        ordersTableView.getColumns().addAll(nameColumn, idColumn,locColumn);
+        //Adjust items string length based on items length
+        itemsColumn.setCellFactory(column -> {
+            return new TableCell<OrderEntity, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+
+                        // Adjust column width based on text length
+                        double textWidth = getText().length() * 7; // Adjust multiplier as needed
+                        if (textWidth > 100) { // Adjust minimum width as needed
+                            setMinWidth(textWidth + 10); // Adjust padding as needed
+                            setPrefWidth(textWidth + 10); // Adjust padding as needed
+                        }
+                    }
+                }
+            };
+        });
+
+        ordersTableView.getColumns().addAll(nameColumn, idColumn,locColumn,itemsColumn);
 
         orders = FXCollections.observableArrayList(
-                model.getAllOrders()
+                model.getPendingOrder()
         );
 
         ordersTableView.setItems(orders);
 
 
 
-
         return ordersTableView;
+    }
+
+    private void handleOrderCompletion() {
+
+
+
+
+        ordersTableView.setRowFactory(tv -> {
+
+            TableRow<OrderEntity> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    orderUpdateTimeLine.stop();
+                    System.out.println("Handling order completion");
+                    OrderEntity selectedOrder = row.getItem();
+                    // Perform the delete operation here
+                    OrdersEntityManager ordersEntityManager = new OrdersEntityManager();
+                    ordersEntityManager.updateOrderCompleted(selectedOrder.getOrderID());;
+                    ordersTableView.getItems().remove(selectedOrder);
+                    orderUpdateTimeLine.play();
+
+                }
+            });
+            return row;
+        });
+
+
     }
 
     public void show() {
@@ -253,4 +327,6 @@ public class DashBoardView {
 
         loginView.show();
     }
+
+
 }

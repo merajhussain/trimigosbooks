@@ -114,9 +114,18 @@ public class OrderWatsappWebhookManager {
 
                     String customerName = splitCucsomterOrder[0];
 
+                    String items="";
+
+                    for(int itemIndex=1;itemIndex<splitCucsomterOrder.length;itemIndex++)
+                    {
+                        items += splitCucsomterOrder[itemIndex]+",";
+                    }
+
+                    items = items.substring(0, items.length()-1); // remove last character
+
                     OrdersEntityManager ordersEntityManager = new OrdersEntityManager();
 
-                    ordersEntityManager.AddOrder(orderId,customerName,location);
+                    ordersEntityManager.AddOrder(orderId,customerName,location,items);
 
                 }
 

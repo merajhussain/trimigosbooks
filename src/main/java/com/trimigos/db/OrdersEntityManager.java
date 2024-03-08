@@ -79,8 +79,9 @@ public class OrdersEntityManager {
                     String customer_name = resultSet.getString(":customer_name");
                     String location = resultSet.getString(":location");
                     boolean pending =  (resultSet.getInt("pending") ==0)?true:false;
+                    String items = resultSet.getString("items");
 
-                    orders.add(new OrderEntity(customer_name,orderId,location,pending));
+                    orders.add(new OrderEntity(customer_name,orderId,location,pending,items));
                 }
 
                 System.out.println("  Orders fetched succesfully");
@@ -119,8 +120,9 @@ public class OrdersEntityManager {
                     String orderId = resultSet.getString("orderid");
                     String customer_name = resultSet.getString("customer_name");
                     String location = resultSet.getString("location");
+                    String items = resultSet.getString("items");
 
-                    orders.add(new OrderEntity(customer_name,orderId,location,true));
+                    orders.add(new OrderEntity(customer_name,orderId,location,true,items));
                 }
 
                 System.out.println("Pending orders fetched succesfully");
@@ -135,18 +137,77 @@ public class OrdersEntityManager {
         }
     }
 
-    synchronized public void updateOrderCompleted(int orderId) {
-        String updateQuery = "UPDATE Orders SET pending = 0 where orderid =?";
+
+    synchronized  public OrderEntity getOrder(String OrderId)   {
+        Connection conn=null;
+        OrderEntity order =null;
+        try
+        {
+
+
+            Class.forName("org.sqlite.JDBC");
+            // db parameters
+            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+
+            if(conn != null && !conn.isClosed())
+            {
+
+
+
+                String query = "SELECT * FROM Orders where orderID=?";
+                PreparedStatement statement = conn.prepareStatement(query);
+
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next())
+                {
+                    String orderId = resultSet.getString("orderid");
+                    String customer_name = resultSet.getString("customer_name");
+                    String location = resultSet.getString("location");
+                    String items = resultSet.getString("items");
+
+                    order = new OrderEntity(customer_name,orderId,location,true,items);
+                }
+
+
+                conn.close();
+            }
+
+
+
+        }catch (SQLException | ClassNotFoundException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        return order;
+    }
+
+
+    synchronized public void updateOrderCompleted(String orderId) {
+        Connection conn=null;
+        String updateQuery = "UPDATE Orders SET pending = ? where orderid =?";
         // Create a PreparedStatement
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+
+            Class.forName("org.sqlite.JDBC");
+            // db parameters
+            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
 
             preparedStatement.setInt(1, 0);
-            preparedStatement.executeQuery(updateQuery);
+            preparedStatement.setString(2, orderId);
+           if( preparedStatement.executeUpdate() ==1)
+           {
+               System.out.println("Updated succesfully");
+           }
 
             System.out.println("OrderId: " + orderId + "Updated successfully");
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error updating data in SQLite database.");
             e.printStackTrace();
         }
@@ -184,8 +245,10 @@ public class OrdersEntityManager {
         }
     }
 
-    synchronized public void AddOrder(String orderId,String customerName,String location) {
-        String insertQuery = "INSERT OR REPLACE INTO Orders (orderid,customer_name,location,pending) VALUES (?,?,?,?)";
+    synchronized public void AddOrder(String orderId,String customerName,String location,String items) {
+
+
+        String insertOrUpdateQuery = "INSERT  INTO ORDERS (orderid, customer_name, location, pending, items)  VALUES( ?, ?, ?, ?, ? )";
         Connection conn=null;
         // Create a PreparedStatement
         try {
@@ -195,20 +258,30 @@ public class OrdersEntityManager {
             String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
-            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+            PreparedStatement preparedStatement = conn.prepareStatement(insertOrUpdateQuery);
 
             preparedStatement.setString(1,orderId);
             preparedStatement.setString(2, customerName);
             preparedStatement.setString(3, location);
             preparedStatement.setInt(4, 1);
+            preparedStatement.setString(5,items);
             preparedStatement.executeUpdate();
 
             System.out.println("Order persisted successfully for the customer "+customerName);
             conn.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error updating data in SQLite database.");
-            e.printStackTrace();
+
+            if(e.getMessage().contains("PRIMARY KEY"))
+            {
+                System.out.println("Ignorning duplicate order "+orderId);
+            }
+            else
+            {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
