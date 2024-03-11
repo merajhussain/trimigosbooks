@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,6 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -36,9 +39,8 @@ public class DashBoardView {
     ObservableList<OrderEntity> orders;
     private Timeline orderUpdateTimeLine;
     private static final int DOUBLE_CLICK_COUNT=2;
-
-
-
+    BorderPane root;
+    Button ordersButton,homeButton,inventoryButton,logoutButton,reportsButton;
 
     public void setModel(DashBoardModel model) {
         this.model = model;
@@ -46,9 +48,6 @@ public class DashBoardView {
 
     private DashBoardModel model;
     TableView<OrderEntity> ordersTableView;
-
-
-
 
     public DashBoardView( DashBoardModel dashboardModel) {
 
@@ -58,10 +57,64 @@ public class DashBoardView {
         this.model = dashboardModel;
         
 
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
         Scene scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("dashboard.css").toExternalForm());
+
         stage.setScene(scene);
+
+        //left pane
+        createOptionsPane();
+
+        createRightPane();
+
+        //center
+        createDashboardView();
+        homeButton.setOnAction(event -> {
+            createDashboardView();
+        });
+
+
+
+        // Add action handlers for the Inventory buttons
+        inventoryButton.setOnAction(event -> {
+            createInventoryView();
+        });
+
+        
+        logoutButton.setOnAction(this::logout);
+
+
+    }
+
+    private void createRightPane() {
+
+        // Create a WebView to display the Google search page
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+
+        webEngine.load("https://www.google.com");
+
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == Worker.State.FAILED) {
+                System.out.println("WebView failed to load: " + webEngine.getLoadWorker().getException());
+            }
+        });
+
+
+        // Add the WebView to the right pane
+        VBox rightPane = new VBox(10);
+        rightPane.setPadding(new Insets(100));
+        rightPane.getStyleClass().add("right-pane");
+        rightPane.setMaxWidth(100);
+        rightPane.getChildren().add(webView);
+
+        // Set the right pane in the root BorderPane
+        root.setRight(rightPane);
+    }
+
+    private void createOptionsPane() {
 
         VBox optionsPane = new VBox(10);
         optionsPane.setPadding(new Insets(10));
@@ -70,78 +123,27 @@ public class DashBoardView {
         // Add labels for each section
         Label optionsLabel = new Label("Options");
         optionsLabel.getStyleClass().add("section-label");
+        homeButton = new Button("DashBoard");
+        homeButton.getStyleClass().add("option-button");
 
-        Button ordersButton = new Button("Orders");
+          ordersButton = new Button("Orders");
         ordersButton.getStyleClass().add("option-button");
-        Button inventoryButton = new Button("Inventory");
+          inventoryButton = new Button("Inventory");
         inventoryButton.getStyleClass().add("option-button");
-        Button reportsButton = new Button("Reports");
+        reportsButton = new Button("Reports");
         reportsButton.getStyleClass().add("option-button");
-        Button logoutButton = new Button("Logout");
+         logoutButton = new Button("Logout");
         logoutButton.getStyleClass().add("option-button");
 
-        addStyleToButton(ordersButton,FontAwesomeIcon.LIST,Color.DARKGRAY);
-        addStyleToButton(inventoryButton,FontAwesomeIcon.HOME,Color.DARKGRAY);
-        addStyleToButton(reportsButton,FontAwesomeIcon.PRINT,Color.DARKGRAY);
-        addStyleToButton(logoutButton,FontAwesomeIcon.SIGN_OUT,Color.DARKGRAY);
+        addStyleToButton(homeButton,FontAwesomeIcon.DASHBOARD,Color.YELLOWGREEN);
 
+        addStyleToButton(ordersButton,FontAwesomeIcon.LIST,Color.YELLOWGREEN);
+        addStyleToButton(inventoryButton,FontAwesomeIcon.HOME,Color.YELLOWGREEN);
+        addStyleToButton(reportsButton,FontAwesomeIcon.PRINT,Color.YELLOWGREEN);
+        addStyleToButton(logoutButton,FontAwesomeIcon.SIGN_OUT,Color.YELLOWGREEN);
 
-
-        optionsPane.getChildren().addAll(optionsLabel, ordersButton, inventoryButton, reportsButton, logoutButton);
+        optionsPane.getChildren().addAll(optionsLabel, homeButton,ordersButton, inventoryButton, reportsButton, logoutButton);
         root.setLeft(optionsPane);
-
-        VBox tableViewContainer = new VBox(20);
-        tableViewContainer.setPadding(new Insets(40)); // Set padding for the VBox
-        tableViewContainer.getStyleClass().add("table-view-container");
-
-        // Create a label and TableView in each VBox
-        VBox tableView1Box = new VBox(10);
-        Label tableView1Label = new Label("Low on Stock  ");
-        tableView1Label.getStyleClass().add("section-label");
-        tableView1Box.getChildren().addAll(tableView1Label, createTableView());
-
-        VBox ordersViewBox = new VBox(10);
-        Label tableView2Label = new Label("Orders to Deliver");
-        tableView2Label.getStyleClass().add("section-label");
-        ordersViewBox.getChildren().addAll(tableView2Label, createOrderTableView());
-        ordersViewBox.setMaxWidth(1000);
-
-        HBox row1 = new HBox(10);
-        row1.getChildren().addAll(tableView1Box, ordersViewBox);
-
-
-        VBox tableView3Box = new VBox(10);
-        Label tableView3Label = new Label("Table View 3");
-        tableView3Box.getStyleClass().add("section-label");
-        tableView3Box.getChildren().addAll(tableView3Label, createTableView());
-
-        VBox tableView4Box = new VBox(10);
-        Label tableView4Label = new Label("Table View 4");
-        tableView4Label.getStyleClass().add("section-label");
-        tableView4Box.getChildren().addAll(tableView4Label, createTableView());
-
-        HBox row2 = new HBox(10);
-        row2.getChildren().addAll(tableView3Box, tableView4Box);
-
-
-        tableViewContainer.getChildren().addAll(row1, row2);
-
-
-       orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables( )));
-
-       orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
-
-        orderUpdateTimeLine.play();
-        root.setCenter(tableViewContainer);
-
-
-        handleOrderViewSelection();
-
-        handleOrderCompletion();
-
-
-        logoutButton.setOnAction(this::logout);
-
 
     }
 
@@ -253,8 +255,6 @@ public class DashBoardView {
     private void handleOrderCompletion() {
 
 
-
-
         ordersTableView.setRowFactory(tv -> {
 
             TableRow<OrderEntity> row = new TableRow<>();
@@ -327,6 +327,70 @@ public class DashBoardView {
         new LoginController(loginModel, loginView);
 
         loginView.show();
+    }
+
+    private void createInventoryView() {
+
+        orderUpdateTimeLine.stop();
+        // Create the Add Inventory view
+        VBox addInventoryView = new VBox();
+        Label addInventoryLabel = new Label("Add Inventory");
+        // Add UI components for adding inventory...
+        addInventoryView.getChildren().add(addInventoryLabel);
+
+        // Replace the current center content with the Add Inventory view
+        root.setCenter(addInventoryView);
+    }
+
+    private void createDashboardView() {
+        VBox tableViewContainer = new VBox(20);
+        tableViewContainer.setPadding(new Insets(20)); // Set padding for the VBox
+        tableViewContainer.getStyleClass().add("table-view-container");
+
+        // Create a label and TableView in each VBox
+        VBox tableView1Box = new VBox(10);
+        Label tableView1Label = new Label("Low on Stock  ");
+        tableView1Label.getStyleClass().add("section-label");
+        tableView1Box.getChildren().addAll(tableView1Label, createTableView());
+
+        VBox ordersViewBox = new VBox(10);
+        Label tableView2Label = new Label("Orders to Deliver");
+        tableView2Label.getStyleClass().add("section-label");
+        ordersViewBox.getChildren().addAll(tableView2Label, createOrderTableView());
+        ordersViewBox.setMaxWidth(1000);
+
+        HBox row1 = new HBox(10);
+        row1.getChildren().addAll(tableView1Box, ordersViewBox);
+
+
+        VBox tableView3Box = new VBox(10);
+        Label tableView3Label = new Label("Table View 3");
+        tableView3Box.getStyleClass().add("section-label");
+        tableView3Box.getChildren().addAll(tableView3Label, createTableView());
+
+        VBox tableView4Box = new VBox(10);
+        Label tableView4Label = new Label("Table View 4");
+        tableView4Label.getStyleClass().add("section-label");
+        tableView4Box.getChildren().addAll(tableView4Label, createTableView());
+
+        HBox row2 = new HBox(10);
+        row2.getChildren().addAll(tableView3Box, tableView4Box);
+
+
+        tableViewContainer.getChildren().addAll(row1, row2);
+
+
+        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables( )));
+
+        orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
+
+        orderUpdateTimeLine.play();
+        root.setCenter(tableViewContainer);
+
+
+        handleOrderViewSelection();
+
+        handleOrderCompletion();
     }
 
 

@@ -2,6 +2,10 @@
     -fx-background-color: indigo;
 }
 
+.right-pane {
+    -fx-background-color: darkgrey;
+}
+
 .option-button {
     -fx-background-color: white;
     -fx-text-fill: darkgrey;
