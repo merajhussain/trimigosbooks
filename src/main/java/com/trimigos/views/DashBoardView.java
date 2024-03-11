@@ -18,10 +18,12 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,6 +31,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +84,7 @@ public class DashBoardView {
             createInventoryView();
         });
 
-        
+
         logoutButton.setOnAction(this::logout);
 
 
@@ -123,24 +126,12 @@ public class DashBoardView {
         // Add labels for each section
         Label optionsLabel = new Label("Options");
         optionsLabel.getStyleClass().add("section-label");
-        homeButton = new Button("DashBoard");
-        homeButton.getStyleClass().add("option-button");
+        homeButton = ViewUtils.createSyledButton("Dashboard",FontAwesomeIcon.DASHBOARD, Color.YELLOWGREEN,"2em","option-button");
+        ordersButton =  ViewUtils.createSyledButton("Orders",FontAwesomeIcon.LIST, Color.YELLOWGREEN,"2em","option-button");
+        inventoryButton =  ViewUtils.createSyledButton("Inventory",FontAwesomeIcon.HOME, Color.YELLOWGREEN,"2em","option-button");
+        reportsButton =  ViewUtils.createSyledButton("Reports",FontAwesomeIcon.PRINT, Color.YELLOWGREEN,"2em","option-button");
+        logoutButton =  ViewUtils.createSyledButton("Logout",FontAwesomeIcon.SIGN_OUT, Color.YELLOWGREEN,"2em","option-button");
 
-          ordersButton = new Button("Orders");
-        ordersButton.getStyleClass().add("option-button");
-          inventoryButton = new Button("Inventory");
-        inventoryButton.getStyleClass().add("option-button");
-        reportsButton = new Button("Reports");
-        reportsButton.getStyleClass().add("option-button");
-         logoutButton = new Button("Logout");
-        logoutButton.getStyleClass().add("option-button");
-
-        addStyleToButton(homeButton,FontAwesomeIcon.DASHBOARD,Color.YELLOWGREEN);
-
-        addStyleToButton(ordersButton,FontAwesomeIcon.LIST,Color.YELLOWGREEN);
-        addStyleToButton(inventoryButton,FontAwesomeIcon.HOME,Color.YELLOWGREEN);
-        addStyleToButton(reportsButton,FontAwesomeIcon.PRINT,Color.YELLOWGREEN);
-        addStyleToButton(logoutButton,FontAwesomeIcon.SIGN_OUT,Color.YELLOWGREEN);
 
         optionsPane.getChildren().addAll(optionsLabel, homeButton,ordersButton, inventoryButton, reportsButton, logoutButton);
         root.setLeft(optionsPane);
@@ -165,10 +156,10 @@ public class DashBoardView {
     private TableView<DataEntity> createTableView( ) {
         TableView<DataEntity> tableView = new TableView<>();
 
-        TableColumn<DataEntity, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<DataEntity, String> nameColumn = new TableColumn<>("SKU");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<DataEntity, Integer> valueColumn = new TableColumn<>("Value");
+        TableColumn<DataEntity, Integer> valueColumn = new TableColumn<>("Quantity");
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
         tableView.getColumns().addAll(nameColumn, valueColumn);
@@ -187,15 +178,6 @@ public class DashBoardView {
 
 
 
-
-    private void addStyleToButton(Button button, FontAwesomeIcon icon, Color fillfolor)
-    {
-        FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
-        iconView.setSize("2em"); // Set icon size
-        iconView.setFill(fillfolor); // Set icon color
-        button.setGraphic(iconView);
-
-    }
 
 
 
@@ -331,16 +313,10 @@ public class DashBoardView {
 
     private void createInventoryView() {
 
-        orderUpdateTimeLine.stop();
-        // Create the Add Inventory view
-        VBox addInventoryView = new VBox();
-        Label addInventoryLabel = new Label("Add Inventory");
-        // Add UI components for adding inventory...
-        addInventoryView.getChildren().add(addInventoryLabel);
-
-        // Replace the current center content with the Add Inventory view
-        root.setCenter(addInventoryView);
+         InventoryView inventoryView = new InventoryView(this.root);
     }
+
+
 
     private void createDashboardView() {
         VBox tableViewContainer = new VBox(20);
