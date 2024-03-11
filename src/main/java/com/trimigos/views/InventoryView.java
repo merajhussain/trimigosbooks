@@ -9,8 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import utils.ViewUtils;
+import com.trimigos.utils.ViewUtils;
 
 public class InventoryView {
 

@@ -8,7 +8,6 @@ import com.trimigos.models.LoginModel;
 import com.trimigos.models.OrderEntity;
 import com.trimigos.web.OrderWatsappWebhookManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -18,12 +17,10 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -31,10 +28,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import utils.ViewUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.trimigos.utils.ViewUtils;
 
 public class DashBoardView {
     private Stage stage;
@@ -44,6 +38,7 @@ public class DashBoardView {
     private static final int DOUBLE_CLICK_COUNT=2;
     BorderPane root;
     Button ordersButton,homeButton,inventoryButton,logoutButton,reportsButton;
+    private  InventoryView inventoryView;
 
     public void setModel(DashBoardModel model) {
         this.model = model;
@@ -311,9 +306,11 @@ public class DashBoardView {
         loginView.show();
     }
 
-    private void createInventoryView() {
+    private InventoryView createInventoryView() {
 
-         InventoryView inventoryView = new InventoryView(this.root);
+        inventoryView = new InventoryView(this.root);
+
+       return inventoryView;
     }
 
 
