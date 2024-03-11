@@ -35,10 +35,10 @@ public class DashBoardView {
 
     ObservableList<OrderEntity> orders;
     private Timeline orderUpdateTimeLine;
-    private static final int DOUBLE_CLICK_COUNT=2;
+    private static final int DOUBLE_CLICK_COUNT = 2;
     BorderPane root;
-    Button ordersButton,homeButton,inventoryButton,logoutButton,reportsButton;
-    private  InventoryView inventoryView;
+    Button ordersButton, homeButton, inventoryButton, logoutButton, reportsButton;
+    private InventoryView inventoryView;
 
     public void setModel(DashBoardModel model) {
         this.model = model;
@@ -47,13 +47,13 @@ public class DashBoardView {
     private DashBoardModel model;
     TableView<OrderEntity> ordersTableView;
 
-    public DashBoardView( DashBoardModel dashboardModel) {
+    public DashBoardView(DashBoardModel dashboardModel) {
 
         stage = new Stage();
         stage.setTitle("Dashboard");
 
         this.model = dashboardModel;
-        
+
 
         root = new BorderPane();
         Scene scene = new Scene(root, 1000, 600);
@@ -71,7 +71,6 @@ public class DashBoardView {
         homeButton.setOnAction(event -> {
             createDashboardView();
         });
-
 
 
         // Add action handlers for the Inventory buttons
@@ -121,14 +120,14 @@ public class DashBoardView {
         // Add labels for each section
         Label optionsLabel = new Label("Options");
         optionsLabel.getStyleClass().add("section-label");
-        homeButton = ViewUtils.createSyledButton("Dashboard",FontAwesomeIcon.DASHBOARD, Color.YELLOWGREEN,"2em","option-button");
-        ordersButton =  ViewUtils.createSyledButton("Orders",FontAwesomeIcon.LIST, Color.YELLOWGREEN,"2em","option-button");
-        inventoryButton =  ViewUtils.createSyledButton("Inventory",FontAwesomeIcon.HOME, Color.YELLOWGREEN,"2em","option-button");
-        reportsButton =  ViewUtils.createSyledButton("Reports",FontAwesomeIcon.PRINT, Color.YELLOWGREEN,"2em","option-button");
-        logoutButton =  ViewUtils.createSyledButton("Logout",FontAwesomeIcon.SIGN_OUT, Color.YELLOWGREEN,"2em","option-button");
+        homeButton = ViewUtils.createSyledButton("Dashboard", FontAwesomeIcon.DASHBOARD, Color.YELLOWGREEN, "2em", "option-button");
+        ordersButton = ViewUtils.createSyledButton("Orders", FontAwesomeIcon.LIST, Color.YELLOWGREEN, "2em", "option-button");
+        inventoryButton = ViewUtils.createSyledButton("Inventory", FontAwesomeIcon.HOME, Color.YELLOWGREEN, "2em", "option-button");
+        reportsButton = ViewUtils.createSyledButton("Reports", FontAwesomeIcon.PRINT, Color.YELLOWGREEN, "2em", "option-button");
+        logoutButton = ViewUtils.createSyledButton("Logout", FontAwesomeIcon.SIGN_OUT, Color.YELLOWGREEN, "2em", "option-button");
 
 
-        optionsPane.getChildren().addAll(optionsLabel, homeButton,ordersButton, inventoryButton, reportsButton, logoutButton);
+        optionsPane.getChildren().addAll(optionsLabel, homeButton, ordersButton, inventoryButton, reportsButton, logoutButton);
         root.setLeft(optionsPane);
 
     }
@@ -142,13 +141,13 @@ public class DashBoardView {
                 // Perform some operation on the selected order here
 
                 // Restart the timeline after the operation is performed
-             //   orderUpdateTimeLine.play();
+                //   orderUpdateTimeLine.play();
             }
         });
     }
 
 
-    private TableView<DataEntity> createTableView( ) {
+    private TableView<DataEntity> createTableView() {
         TableView<DataEntity> tableView = new TableView<>();
 
         TableColumn<DataEntity, String> nameColumn = new TableColumn<>("SKU");
@@ -172,12 +171,7 @@ public class DashBoardView {
     }
 
 
-
-
-
-
-    public TableView<OrderEntity> createOrderTableView()
-    {
+    public TableView<OrderEntity> createOrderTableView() {
         this.ordersTableView = new TableView<>();
 
         TableColumn<OrderEntity, String> nameColumn = new TableColumn<>("CustomerName");
@@ -216,14 +210,13 @@ public class DashBoardView {
             };
         });
 
-        ordersTableView.getColumns().addAll(nameColumn, idColumn,locColumn,itemsColumn);
+        ordersTableView.getColumns().addAll(nameColumn, idColumn, locColumn, itemsColumn);
 
         orders = FXCollections.observableArrayList(
                 model.getPendingOrder()
         );
 
         ordersTableView.setItems(orders);
-
 
 
         return ordersTableView;
@@ -242,7 +235,8 @@ public class DashBoardView {
                     OrderEntity selectedOrder = row.getItem();
                     // Perform the delete operation here
                     OrdersEntityManager ordersEntityManager = new OrdersEntityManager();
-                    ordersEntityManager.updateOrderCompleted(selectedOrder.getOrderID());;
+                    ordersEntityManager.updateOrderCompleted(selectedOrder.getOrderID());
+                    ;
                     ordersTableView.getItems().remove(selectedOrder);
                     orderUpdateTimeLine.play();
 
@@ -258,8 +252,7 @@ public class DashBoardView {
         stage.show();
     }
 
-     public void updateDashBoardViewTables( )
-    {
+    public void updateDashBoardViewTables() {
 
         Task<Void> task = new Task<Void>() {
             @Override
@@ -286,12 +279,10 @@ public class DashBoardView {
         thread.start();
 
 
-
     }
 
 
-    private void logout(ActionEvent actionEvent)
-    {
+    private void logout(ActionEvent actionEvent) {
         orderUpdateTimeLine.stop(); // stop the order poller
 
 
@@ -308,11 +299,10 @@ public class DashBoardView {
 
     private InventoryView createAndShowInventoryView() {
 
-        inventoryView = new InventoryView(this.root,this.stage);
+        inventoryView = new InventoryView(this.root, this.stage);
 
-       return inventoryView;
+        return inventoryView;
     }
-
 
 
     private void createDashboardView() {
@@ -355,7 +345,7 @@ public class DashBoardView {
         tableViewContainer.getChildren().addAll(row1, row2);
 
 
-        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables( )));
+        orderUpdateTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> updateDashBoardViewTables()));
 
         orderUpdateTimeLine.setCycleCount(Timeline.INDEFINITE);
 
