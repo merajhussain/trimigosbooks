@@ -76,7 +76,7 @@ public class DashBoardView {
 
         // Add action handlers for the Inventory buttons
         inventoryButton.setOnAction(event -> {
-            createInventoryView();
+            createAndShowInventoryView();
         });
 
 
@@ -306,9 +306,9 @@ public class DashBoardView {
         loginView.show();
     }
 
-    private InventoryView createInventoryView() {
+    private InventoryView createAndShowInventoryView() {
 
-        inventoryView = new InventoryView(this.root);
+        inventoryView = new InventoryView(this.root,this.stage);
 
        return inventoryView;
     }
@@ -316,6 +316,8 @@ public class DashBoardView {
 
 
     private void createDashboardView() {
+
+        stage.setTitle("Dashboard");
         VBox tableViewContainer = new VBox(20);
         tableViewContainer.setPadding(new Insets(20)); // Set padding for the VBox
         tableViewContainer.getStyleClass().add("table-view-container");

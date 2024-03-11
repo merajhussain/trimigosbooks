@@ -10,14 +10,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import com.trimigos.utils.ViewUtils;
+import javafx.stage.Stage;
 
 public class InventoryView {
 
-    public  InventoryView(BorderPane root)
+    public  InventoryView(BorderPane root, Stage primaryStage)
     {
+
+        primaryStage.setTitle("Inventory Details");
         VBox addInventoryView = new VBox();
-        Label addInventoryLabel = new Label("Inventory Details");
-        addInventoryLabel.setAlignment(Pos.CENTER);
+
+
+
+        addInventoryView.getStylesheets().add(getClass().getClassLoader().getResource("inventory.css").toExternalForm());
 
         // Create a GridPane for organizing the buttons
         GridPane gridPane = new GridPane();
@@ -26,8 +31,8 @@ public class InventoryView {
         gridPane.setPadding(new Insets(10)); // Padding around the grid
 
         // Create buttons with Font Awesome icons
-        Button button1 = ViewUtils.createSyledButton("Add Inventory", FontAwesomeIcon.SHOPPING_CART, Color.DARKGRAY,"20em","");
-        Button button2 = ViewUtils.createSyledButton("View Inventory",FontAwesomeIcon.CART_ARROW_DOWN,Color.DARKGRAY,"20em","");
+        Button button1 = ViewUtils.createSyledButton("Add Inventory", FontAwesomeIcon.SHOPPING_CART, Color.DARKGRAY,"20em","inventory-button");
+        Button button2 = ViewUtils.createSyledButton("View Inventory",FontAwesomeIcon.CART_ARROW_DOWN,Color.DARKGRAY,"20em","inventory-button");
 
         // Add buttons to the grid
         gridPane.add(button1, 4, 0);
@@ -35,7 +40,7 @@ public class InventoryView {
 
 
         // Add UI components for adding inventory...
-        addInventoryView.getChildren().addAll(addInventoryLabel, gridPane);
+        addInventoryView.getChildren().addAll( gridPane);
         root.setCenter(addInventoryView);
 
     }
