@@ -71,23 +71,23 @@ public class DashBoardView {
         Label optionsLabel = new Label("Options");
         optionsLabel.getStyleClass().add("section-label");
 
-        Button option1Button = new Button("Orders");
-        option1Button.getStyleClass().add("option-button");
-        Button option2Button = new Button("Inventory");
-        option2Button.getStyleClass().add("option-button");
-        Button option3Button = new Button("Reports");
-        option3Button.getStyleClass().add("option-button");
+        Button ordersButton = new Button("Orders");
+        ordersButton.getStyleClass().add("option-button");
+        Button inventoryButton = new Button("Inventory");
+        inventoryButton.getStyleClass().add("option-button");
+        Button reportsButton = new Button("Reports");
+        reportsButton.getStyleClass().add("option-button");
         Button logoutButton = new Button("Logout");
         logoutButton.getStyleClass().add("option-button");
 
-        addStyleToButton(option1Button,FontAwesomeIcon.LIST,Color.DARKGRAY);
-        addStyleToButton(option2Button,FontAwesomeIcon.HOME,Color.DARKGRAY);
-        addStyleToButton(option3Button,FontAwesomeIcon.PRINT,Color.DARKGRAY);
+        addStyleToButton(ordersButton,FontAwesomeIcon.LIST,Color.DARKGRAY);
+        addStyleToButton(inventoryButton,FontAwesomeIcon.HOME,Color.DARKGRAY);
+        addStyleToButton(reportsButton,FontAwesomeIcon.PRINT,Color.DARKGRAY);
         addStyleToButton(logoutButton,FontAwesomeIcon.SIGN_OUT,Color.DARKGRAY);
 
 
 
-        optionsPane.getChildren().addAll(optionsLabel, option1Button, option2Button, option3Button, logoutButton);
+        optionsPane.getChildren().addAll(optionsLabel, ordersButton, inventoryButton, reportsButton, logoutButton);
         root.setLeft(optionsPane);
 
         VBox tableViewContainer = new VBox(20);
