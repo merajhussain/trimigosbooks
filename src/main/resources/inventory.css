@@ -15,8 +15,8 @@
 
 /* Button styling */
 .add-button {
-    -fx-background-color:#FFD700;
-    -fx-text-fill: white;
+    -fx-background-color: white;
+    -fx-text-fill: darkgrey;
     -fx-font-weight: bold;
     -fx-padding: 8px 16px;
     -fx-border-radius: 5px;
@@ -26,5 +26,28 @@
 
 /* Hover effect for Button */
 .add-button:hover {
-    -fx-background-color: darkgrey;
+    -fx-background-color: black;
 }
+
+/* In your CSS file */
+.date-picker {
+    -fx-font-size: 14px; /* Adjust the font size */
+    -fx-pref-width: 150px; /* Adjust the preferred width */
+    -fx-pref-height: 30px; /* Adjust the preferred height */
+    -fx-background-color: black; /* Set background color */
+    -fx-text-fill: black; /* Set text color */
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: darkgrey; /* Set color of the arrow button */
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: indigo; /* Set color of the arrow button on hover */
+}
+
+.date-picker .month-year-pane {
+    -fx-text-fill: black; /* Set color for month and year text */
+}
+
+

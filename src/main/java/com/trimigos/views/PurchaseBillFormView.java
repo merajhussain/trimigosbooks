@@ -105,6 +105,7 @@ public class PurchaseBillFormView {
 
         Label billDateLabel = createLabel("Bill Date:");
         DatePicker billDatePicker = new DatePicker();
+        billDatePicker.getStyleClass().add("date-picker");
 
 
         formFields.getChildren().addAll(
@@ -120,6 +121,7 @@ public class PurchaseBillFormView {
 
         // Create TableView and define columns
         itemTable = new TableView<>();
+   
 
 
         TableColumn<Item, String> skuColumn = new TableColumn<>("SKU");
@@ -143,7 +145,7 @@ public class PurchaseBillFormView {
 
         itemTable.setItems(itemList);
 
-        Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.YELLOW,"2em","add-button");
+        Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.DARKGRAY,"2em","add-button");
         addButton.setOnAction(e -> addItem(itemTable));
 
         HBox tableControls = new HBox(addButton);
