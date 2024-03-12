@@ -1,3 +1,30 @@
 .inventory-button {
     -fx-content-display: bottom;
 }
+
+.background {
+    -fx-background-color: indigo;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+
+
+/* Button styling */
+.add-button {
+    -fx-background-color:#FFD700;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 150px;
+
+}
+
+/* Hover effect for Button */
+.add-button:hover {
+    -fx-background-color: darkgrey;
+}
