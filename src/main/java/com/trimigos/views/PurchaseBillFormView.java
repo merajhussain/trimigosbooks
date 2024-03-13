@@ -3,6 +3,9 @@ package com.trimigos.views;
 import com.trimigos.utils.ViewUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -60,13 +63,55 @@ public class PurchaseBillFormView {
         double rate;
         double discount;
 
-        public Item(String sku, int quantity, double rate, double discount) {
+        public double getTaxableValue() {
+            return taxableValue;
+        }
+
+        public void setTaxableValue(double taxableValue) {
+            this.taxableValue = taxableValue;
+        }
+
+        public double getIgstr() {
+            return igstr;
+        }
+
+        public void setIgstr(double igstr) {
+            this.igstr = igstr;
+        }
+
+        public double getIgstv() {
+            return igstv;
+        }
+
+        public void setIgstv(double igstv) {
+            this.igstv = igstv;
+        }
+
+        public double getFinalPrice() {
+            return finalPrice;
+        }
+
+        public void setFinalPrice(double finalPrice) {
+            this.finalPrice = finalPrice;
+        }
+
+        double taxableValue;
+        double igstr;
+        double igstv;
+        double finalPrice;
+
+        public Item(String sku, int quantity, double rate, double discount, double taxableValue, double igstr, double igstv, double finalPrice) {
             this.sku = sku;
             this.quantity = quantity;
             this.rate = rate;
             this.discount = discount;
+            this.taxableValue = taxableValue;
+            this.igstr = igstr;
+            this.igstv = igstv;
+            this.finalPrice = finalPrice;
         }
-        // Define properties for bill items
+
+
     }
 
     private Stage formStage;
@@ -74,11 +119,34 @@ public class PurchaseBillFormView {
     private ObservableList<Item> itemList;
 
 
+    private String labelText;
+    private Label totalLabel;
+
+    private double totalPrice;
+
+
+
     public PurchaseBillFormView() {
         // Create a new stage for the form
         formStage = new Stage();
         formStage.initModality(Modality.APPLICATION_MODAL); // Prevent interactions with other windows while this form is open
         formStage.setTitle("Inventory/Purchase bill Form");
+
+
+       totalPrice =0.0;
+
+        // Add a label to display the total price
+        totalLabel = new Label();
+
+        totalLabel.getStyleClass().add("total-label");
+
+
+
+        // Create layout for the label
+        HBox totalBox = new HBox(totalLabel);
+        totalBox.setAlignment(Pos.BASELINE_RIGHT);
+        totalBox.setPadding(new Insets(10));
+        totalBox.getStyleClass().add("total-box");
 
 
         // Create the main layout
@@ -121,48 +189,81 @@ public class PurchaseBillFormView {
 
         // Create TableView and define columns
         itemTable = new TableView<>();
-   
 
+
+        itemTable.getStyleClass().add("table-view");
+        itemTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn<Item, String> skuColumn = new TableColumn<>("SKU");
         TableColumn<Item, Integer> quantityColumn = new TableColumn<>("Quantity");
         TableColumn<Item, Double> rateColumn = new TableColumn<>("Rate");
         TableColumn<Item, Double> discountColumn = new TableColumn<>("Discount");
-      /*  TableColumn< Item, Double> taxableValueColumn = new TableColumn<>("Taxable Value");
-        TableColumn< Item, Double> igstRateColumn = new TableColumn<>("IGST Rate");
-        TableColumn< Item, Double> igstAmountColumn = new TableColumn<>("IGST Amount");
-        TableColumn< Item, Double> finalPriceColumn = new TableColumn<>("Final Price");*/
+
+
+        TableColumn<Item, Double> taxableValueColumn = new TableColumn<>("Taxable Value");
+        TableColumn<Item, Double> igstRateColumn = new TableColumn<>("IGST Rate");
+        TableColumn<Item, Double> igstAmountColumn = new TableColumn<>("IGST Amount");
+        TableColumn<Item, Double> finalPriceColumn = new TableColumn<>("Final Price");
+
+        //style the column headers
+        skuColumn.getStyleClass().add("column-header-background");
+        quantityColumn.getStyleClass().add("column-header-background");
+        rateColumn.getStyleClass().add("column-header-background");
+        discountColumn.getStyleClass().add("column-header-background");
+        taxableValueColumn.getStyleClass().add("column-header-background");
+        igstRateColumn.getStyleClass().add("column-header-background");
+        igstAmountColumn.getStyleClass().add("column-header-background");
+        finalPriceColumn.getStyleClass().add("column-header-background");
+
 
         skuColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
+        taxableValueColumn.setCellValueFactory(new PropertyValueFactory<>("taxableValue"));
+        igstRateColumn.setCellValueFactory(new PropertyValueFactory<>("igstr"));
+        igstAmountColumn.setCellValueFactory(new PropertyValueFactory<>("igstv"));
+        finalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("finalPrice"));
+
 
         itemTable.getColumns().addAll(
-                skuColumn, quantityColumn, rateColumn, discountColumn
+                skuColumn, quantityColumn, rateColumn, discountColumn,
+                taxableValueColumn, igstRateColumn, igstAmountColumn, finalPriceColumn
         );
 
 
         itemTable.setItems(itemList);
 
-        Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.DARKGRAY,"2em","add-button");
+        Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.DARKGRAY, "2em", "add-button");
         addButton.setOnAction(e -> addItem(itemTable));
 
         HBox tableControls = new HBox(addButton);
         tableControls.setAlignment(Pos.CENTER);
         tableControls.setPadding(new Insets(10));
 
-        VBox tableContainer = new VBox(itemTable, tableControls);
+        Button submitButton = ViewUtils.createSyledButton("SUBMIT", FontAwesomeIcon.CHECK, Color.DARKGRAY, "2em", "submit-button");
+        submitButton.setOnAction(e -> submitForm(itemTable));
+
+        HBox buttonBox = new HBox(addButton, submitButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(10);
+        buttonBox.setPadding(new Insets(10));
+
+
+        VBox tableContainer = new VBox(itemTable, tableControls, buttonBox);
         VBox.setVgrow(tableContainer, Priority.ALWAYS);
 
         // Add form fields and table to the main layout
-        root.getChildren().addAll(formFields, tableContainer);
+        root.getChildren().addAll(formFields, tableContainer, totalBox);
 
         // Set the scene
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("inventory.css").toExternalForm());
         formStage.setScene(scene);
 
+    }
+
+    private void submitForm(TableView<Item> itemTable) {
     }
 
     private Label createLabel(String text) {
@@ -193,6 +294,7 @@ public class PurchaseBillFormView {
         TextField quantityField = new TextField();
         TextField rateField = new TextField();
         TextField discountField = new TextField();
+        TextField igstField = new TextField();
 
         // Add form fields to dialog box
         GridPane grid = new GridPane();
@@ -205,6 +307,8 @@ public class PurchaseBillFormView {
         grid.add(rateField, 1, 2);
         grid.add(new Label("Discount:"), 0, 3);
         grid.add(discountField, 1, 3);
+        grid.add(new Label("igst:"), 0, 4);
+        grid.add(igstField, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -220,9 +324,23 @@ public class PurchaseBillFormView {
                     int quantity = Integer.parseInt(quantityField.getText());
                     double rate = Double.parseDouble(rateField.getText());
                     double discount = Double.parseDouble(discountField.getText());
+                    double igstr = Double.parseDouble(igstField.getText());
+
+                    double taxableValue = quantity * rate + discount;
+                    double igstv = (double) (taxableValue * igstr) / (double) 100;
+                    double finalPrice = taxableValue - igstv;
+
+
+                    Platform.runLater(() -> {
+                        totalPrice += finalPrice;
+                        totalLabel.setText(String.format("Total: Rs%.2f/-", totalPrice));
+                    });
                     // Calculate taxable value, IGST amount, and final price here if needed
-                    itemList.add(new Item(sku, quantity, rate, discount));
-                    return null;
+                    itemList.add(new Item(sku, quantity, rate, discount, taxableValue, igstr, igstv, finalPrice));
+                    labelText ="Total: Rs"+totalPrice+"/-";
+
+
+
                 } catch (NumberFormatException e) {
                     // Show an error message if input validation fails
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -242,10 +360,14 @@ public class PurchaseBillFormView {
         // Add the new item to the table if the user clicked Add
         result.ifPresent(table.getItems()::add);
 
+        dialog.close();
+
     }
 
 
     public void showForm() {
         this.formStage.show();
     }
+
+
 }

@@ -4,7 +4,7 @@
 
 .background {
     -fx-background-color: indigo;
-    -fx-text-fill: white;
+
 }
 
 .label {
@@ -26,8 +26,24 @@
 
 /* Hover effect for Button */
 .add-button:hover {
-    -fx-background-color: black;
+    -fx-background-color: yellow;
 }
+
+.submit-button {
+    -fx-background-color: white;
+    -fx-text-fill: darkgrey;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 150px;
+
+}
+
+/* Hover effect for Button */
+.submit-button:hover {
+    -fx-background-color: yellow;
+}
+
 
 /* In your CSS file */
 .date-picker {
@@ -35,7 +51,7 @@
     -fx-pref-width: 150px; /* Adjust the preferred width */
     -fx-pref-height: 30px; /* Adjust the preferred height */
     -fx-background-color: black; /* Set background color */
-    -fx-text-fill: black; /* Set text color */
+    -fx-text-fill: indigo\; /* Set text color */
 }
 
 .date-picker .arrow-button {
@@ -47,7 +63,47 @@
 }
 
 .date-picker .month-year-pane {
-    -fx-text-fill: black; /* Set color for month and year text */
+    -fx-text-fill: indigo; /* Set color for month and year text */
+}
+
+/* In your CSS file */
+.table-view {
+    -fx-background-color: white; /* Background color of the table */
+}
+
+.table-view .column-header-background {
+    -fx-background-color: indigo/* Background color of the column headers */
 }
 
 
+.table-view .table-cell {
+    -fx-text-fill: white; /* Text color of cell content */
+    -fx-alignment: center;
+
+}
+
+.table-view .table-row-cell:odd .table-cell {
+    -fx-background-color: white; /* Alternate row background color */
+      -fx-text-fill: black;
+
+}
+
+.table-view .table-row-cell:even .table-cell {
+    -fx-background-color: yellow; /* Even row background color */
+     -fx-text-fill: black;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-background-color: yellow; /* Background color of selected rows */
+    -fx-text-fill: black;
+}
+
+
+.total-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.total-box {
+    -fx-background-color: indigo;
+}
