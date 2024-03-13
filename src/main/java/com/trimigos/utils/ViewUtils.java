@@ -18,7 +18,6 @@ public class ViewUtils {
             button.getStyleClass().add(cssStyle);
         }
 
-
         return button;
 
     }

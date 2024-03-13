@@ -51,7 +51,7 @@
     -fx-pref-width: 150px; /* Adjust the preferred width */
     -fx-pref-height: 30px; /* Adjust the preferred height */
     -fx-background-color: black; /* Set background color */
-    -fx-text-fill: indigo\; /* Set text color */
+    -fx-text-fill: indigo; /* Set text color */
 }
 
 .date-picker .arrow-button {

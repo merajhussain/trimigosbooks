@@ -87,7 +87,7 @@ public class DashBoardView {
     private void createRightPane() {
 
         // Create a WebView to display the Google search page
-        WebView webView = new WebView();
+     /*   WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
 
@@ -97,7 +97,7 @@ public class DashBoardView {
             if (newValue == Worker.State.FAILED) {
                 System.out.println("WebView failed to load: " + webEngine.getLoadWorker().getException());
             }
-        });
+        });*/
 
 
         // Add the WebView to the right pane
@@ -105,7 +105,7 @@ public class DashBoardView {
         rightPane.setPadding(new Insets(100));
         rightPane.getStyleClass().add("right-pane");
         rightPane.setMaxWidth(100);
-        rightPane.getChildren().add(webView);
+        //rightPane.getChildren().add(webView);
 
         // Set the right pane in the root BorderPane
         root.setRight(rightPane);
