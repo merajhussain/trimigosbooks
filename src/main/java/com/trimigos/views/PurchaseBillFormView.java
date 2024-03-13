@@ -1,5 +1,7 @@
 package com.trimigos.views;
 
+import com.trimigos.models.PurchaseBillFormData;
+import com.trimigos.models.PurchaseBillItem;
 import com.trimigos.utils.ViewUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.application.Platform;
@@ -21,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class PurchaseBillFormView {
@@ -123,6 +126,12 @@ public class PurchaseBillFormView {
     private Label totalLabel;
 
     private double totalPrice;
+    private PurchaseBillFormData formData;
+    TextField vehicleNoField;
+    TextField carrierNameField;
+    TextField modeOfTransportField;
+    TextField grNoField;
+    DatePicker billDatePicker;
 
 
 
@@ -133,7 +142,7 @@ public class PurchaseBillFormView {
         formStage.setTitle("Inventory/Purchase bill Form");
 
 
-       totalPrice =0.0;
+        totalPrice =0.0;
 
         // Add a label to display the total price
         totalLabel = new Label();
@@ -160,19 +169,19 @@ public class PurchaseBillFormView {
         formFields.setSpacing(10);
 
         Label vehicleNoLabel = createLabel("Vehicle No:");
-        TextField vehicleNoField = new TextField();
+          vehicleNoField = new TextField();
 
         Label carrierNameLabel = createLabel("Carrier Name:");
-        TextField carrierNameField = new TextField();
+        carrierNameField = new TextField();
 
         Label modeOfTransportLabel = createLabel("Mode of Transport:");
-        TextField modeOfTransportField = new TextField();
+         modeOfTransportField = new TextField();
 
         Label grNoLabel = createLabel("GR No:");
-        TextField grNoField = new TextField();
+        grNoField = new TextField();
 
         Label billDateLabel = createLabel("Bill Date:");
-        DatePicker billDatePicker = new DatePicker();
+        billDatePicker = new DatePicker();
         billDatePicker.getStyleClass().add("date-picker");
 
 
@@ -237,20 +246,18 @@ public class PurchaseBillFormView {
         Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.DARKGRAY, "2em", "add-button");
         addButton.setOnAction(e -> addItem(itemTable));
 
-        HBox tableControls = new HBox(addButton);
-        tableControls.setAlignment(Pos.CENTER);
-        tableControls.setPadding(new Insets(10));
 
         Button submitButton = ViewUtils.createSyledButton("SUBMIT", FontAwesomeIcon.CHECK, Color.DARKGRAY, "2em", "submit-button");
-        submitButton.setOnAction(e -> submitForm(itemTable));
+        submitButton.setOnAction(e -> submitForm(itemList));
 
         HBox buttonBox = new HBox(addButton, submitButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(10);
         buttonBox.setPadding(new Insets(10));
 
+        itemTable.setPrefHeight(200);
 
-        VBox tableContainer = new VBox(itemTable, tableControls, buttonBox);
+        VBox tableContainer = new VBox(itemTable, buttonBox);
         VBox.setVgrow(tableContainer, Priority.ALWAYS);
 
         // Add form fields and table to the main layout
@@ -263,7 +270,23 @@ public class PurchaseBillFormView {
 
     }
 
-    private void submitForm(TableView<Item> itemTable) {
+    private void submitForm(ObservableList<Item> itemList) {
+
+        ArrayList<PurchaseBillItem> items  = new ArrayList<>();
+
+        for( var item : itemList)
+        {
+            items.add(new PurchaseBillItem(item.getSku(),item.getQuantity(),item.getRate(),
+                    item.getDiscount(),item.getTaxableValue(),item.getIgstr(),item.getIgstv(),item.getFinalPrice()));
+        }
+
+        PurchaseBillFormData purchaseBillFormData = new PurchaseBillFormData( vehicleNoField.getText(),
+                                                                              carrierNameField.getText(),
+                                                                              modeOfTransportField.getText(),
+                                                                              Integer.parseInt(grNoField.getText()),
+                                                                              billDatePicker.getValue(),items);
+
+
     }
 
     private Label createLabel(String text) {
