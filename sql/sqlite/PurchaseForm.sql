@@ -30,3 +30,12 @@ CREATE TABLE SKU (
     id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
     name TEXT UNIQUE
 );
+
+
+CREATE TABLE InventoryStock (
+    id INTEGER PRIMARY KEY,
+    name TEXT UNIQUE,
+	quantity INTEGER 
+);
+
+
