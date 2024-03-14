@@ -1,7 +1,7 @@
 package com.trimigos.web;
 
 import com.trimigos.db.OrdersEntityManager;
-import com.trimigos.models.OrderEntity;
+import com.trimigos.entity.OrderEntity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

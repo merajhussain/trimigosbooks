@@ -5,7 +5,7 @@ import com.trimigos.db.OrdersEntityManager;
 import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
 import com.trimigos.models.LoginModel;
-import com.trimigos.models.OrderEntity;
+import com.trimigos.entity.OrderEntity;
 import com.trimigos.web.OrderWatsappWebhookManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.KeyFrame;
@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,8 +23,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.trimigos.utils.ViewUtils;
@@ -75,6 +72,7 @@ public class DashBoardView {
 
         // Add action handlers for the Inventory buttons
         inventoryButton.setOnAction(event -> {
+            orderUpdateTimeLine.stop();
             createAndShowInventoryView();
         });
 
@@ -299,7 +297,10 @@ public class DashBoardView {
 
     private InventoryView createAndShowInventoryView() {
 
+
+        orderUpdateTimeLine.stop();
         inventoryView = new InventoryView(this.root, this.stage);
+
 
         return inventoryView;
     }

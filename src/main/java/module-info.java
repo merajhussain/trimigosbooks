@@ -24,4 +24,5 @@ module com.trimigos.trimigosbooks {
     exports com.trimigos.controllers;
     exports com.trimigos.models;
     exports com.trimigos.views;
+    exports com.trimigos.entity;
 }

@@ -1,6 +1,6 @@
 package com.trimigos.db;
 
-import com.trimigos.models.OrderEntity;
+import com.trimigos.entity.OrderEntity;
 
 import java.sql.*;
 import java.util.ArrayList;

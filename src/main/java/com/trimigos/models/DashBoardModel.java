@@ -2,10 +2,9 @@
 package com.trimigos.models;
 
 import com.trimigos.db.OrdersEntityManager;
+import com.trimigos.entity.OrderEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 
 public class DashBoardModel {
 

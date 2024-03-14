@@ -1,6 +1,7 @@
 package com.trimigos.views;
 
 import com.trimigos.models.PurchaseBillFormData;
+import com.trimigos.models.PurchaseBillFormModel;
 import com.trimigos.models.PurchaseBillItem;
 import com.trimigos.utils.ViewUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -285,6 +286,13 @@ public class PurchaseBillFormView {
                                                                               modeOfTransportField.getText(),
                                                                               Integer.parseInt(grNoField.getText()),
                                                                               billDatePicker.getValue(),items);
+
+        purchaseBillFormData.setTotalBillValue(totalPrice);
+
+        PurchaseBillFormModel purchaseBillFormModel = new PurchaseBillFormModel(purchaseBillFormData);
+        purchaseBillFormModel.SavePurchaseBill();
+
+        formStage.close();
 
 
     }

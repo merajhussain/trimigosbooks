@@ -1,4 +1,4 @@
-package com.trimigos.models;
+package com.trimigos.entity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
