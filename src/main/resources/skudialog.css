@@ -1,0 +1,24 @@
+.skuview-dialog-pane {
+    -fx-background-color: indigo;
+}
+
+.sku-label {
+    -fx-text-fill: white; /* Set text color to white */
+}
+
+.add-sku-button{
+-fx-background-color: darkgrey;
+}
+
+.add-sku-button:hover
+{
+-fx-background-color: yellow;
+}
+
+
+/* Style for default button */
+.button-type {
+    -fx-background-color: darkgrey;
+    -fx-text-fill: white; /* White text color */
+}
+

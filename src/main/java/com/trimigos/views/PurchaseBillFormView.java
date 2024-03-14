@@ -1,8 +1,10 @@
 package com.trimigos.views;
 
+import com.trimigos.db.SkuEntityManager;
 import com.trimigos.models.PurchaseBillFormData;
 import com.trimigos.models.PurchaseBillFormModel;
 import com.trimigos.models.PurchaseBillItem;
+import com.trimigos.models.SkuModel;
 import com.trimigos.utils.ViewUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.application.Platform;
@@ -316,8 +318,27 @@ public class PurchaseBillFormView {
 
         // Create a ComboBox for SKU selection
         ComboBox<String> skuComboBox = new ComboBox<>();
-        skuComboBox.getItems().addAll("SKU1", "SKU2", "SKU3"); // Add your SKUs here
-        skuComboBox.setEditable(true); // Allow manual input in addition to the predefined options
+        skuComboBox.setEditable(true);
+
+
+        ObservableList<String> skuItems = FXCollections.observableList(getSkus());
+        skuComboBox.setItems(skuItems);
+        //Filter items based on user input
+        skuComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty()) {
+                skuComboBox.setItems(skuItems);
+                skuComboBox.hide();
+            } else {
+                ObservableList<String> filteredItems = FXCollections.observableArrayList();
+                for (String item : skuItems) {
+                    if (item.toLowerCase().contains(newValue.toLowerCase())) {
+                        filteredItems.add(item);
+                    }
+                }
+                skuComboBox.setItems(filteredItems);
+                skuComboBox.show();
+            }
+        });
 
 
         // Create form fields
@@ -395,6 +416,21 @@ public class PurchaseBillFormView {
 
     }
 
+    ArrayList<String> getSkus()
+    {
+        SkuModel skuModel = new SkuModel();
+
+        var skuEntities = skuModel.getAllSkus();
+
+        ArrayList<String> skus = new ArrayList<>();
+        for(var sku : skuEntities)
+        {
+            skus.add(sku.getSku());
+        }
+
+        return  skus;
+
+    }
 
     public void showForm() {
         this.formStage.show();

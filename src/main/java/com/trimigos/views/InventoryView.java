@@ -1,6 +1,7 @@
 package com.trimigos.views;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +12,8 @@ import com.trimigos.utils.ViewUtils;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.PropertySheet;
+
+import java.util.Optional;
 
 public class InventoryView {
 
@@ -48,11 +51,23 @@ public class InventoryView {
 
         addPurchaseBillButton.setOnAction(e->addInventoryForm());
 
+        addSkuBtn.setOnAction(e -> addSkuForm());
+
 
         // Add UI components for adding inventory...
         addInventoryView.getChildren().addAll(gridPane);
         root.setCenter(addInventoryView);
 
+    }
+
+    private void addSkuForm() {
+
+        createSkuView();
+    }
+
+    private void createSkuView() {
+
+        AddSkuView addSkuView = new AddSkuView();
     }
 
     private void addInventoryForm() {
