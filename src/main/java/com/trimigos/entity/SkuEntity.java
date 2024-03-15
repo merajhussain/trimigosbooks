@@ -1,31 +1,89 @@
 package com.trimigos.entity;
 
+import java.util.UUID;
+
 public class SkuEntity {
 
 
-    public SkuEntity(String sku) {
-        this.sku = sku;
+    private String id;
+
+
+    public String getSkuName() {
+        return skuName;
     }
 
-    private String sku;
-    private int skuId;
-
-    public SkuEntity( int skuId,String sku) {
-        this.sku = sku;
-        this.skuId = skuId;
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
     }
 
-    public void setSkuId(int skuId) {
-        this.skuId = skuId;
+    public double getRate() {
+        return rate;
     }
 
-
-
-    public String getSku() {
-        return sku;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    private String skuName;
+    private double rate;
+    private  double salePrice;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getThresholdstock() {
+        return thresholdstock;
+    }
+
+    public void setThresholdstock(int thresholdstock) {
+        this.thresholdstock = thresholdstock;
+    }
+
+    public SkuEntity(String id, String skuName, double rate, double salePrice, int quantity, int thresholdstock) {
+        this.id = id;
+        this.skuName = skuName;
+        this.rate = rate;
+        this.salePrice = salePrice;
+        this.quantity = quantity;
+        this.thresholdstock = thresholdstock;
+    }
+
+    private int quantity;
+    private int thresholdstock;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public SkuEntity(String id, String skuName, double rate, double salePrice) {
+        this.id = id;
+        this.skuName = skuName;
+        this.rate = rate;
+        this.salePrice = salePrice;
+    }
+
+    public SkuEntity(String skuName, double rate, double salePrice,int thresholdstock) {
+        this.skuName = skuName;
+        this.rate = rate;
+        this.salePrice = salePrice;
+        this.thresholdstock = thresholdstock;
+        this.id = UUID.randomUUID().toString();
     }
 }

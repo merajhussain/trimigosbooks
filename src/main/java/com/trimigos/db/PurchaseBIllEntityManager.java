@@ -53,7 +53,7 @@ public class PurchaseBIllEntityManager {
             PreparedStatement preparedItemStatement = conn.prepareStatement(insertPurchaseOrderItemQuery);
             preparedItemStatement.setString(1,item.getItemID());
             preparedItemStatement.setString(2, item.getPurchaseBillId());
-            preparedItemStatement.setInt(3, item.getSku());
+            preparedItemStatement.setString(3, item.getSkuId());
             preparedItemStatement.setString(4, item.getSkuName());
             preparedItemStatement.setDouble(5, item.getQuantity());
             preparedItemStatement.setDouble(6, item.getRate());
@@ -63,6 +63,16 @@ public class PurchaseBIllEntityManager {
             preparedItemStatement.setDouble(10,item.getIgstv());
             preparedItemStatement.setDouble(11,item.getFinalPrice());
             preparedItemStatement.executeUpdate();
+
+            int currStock = item.getCurrStockQuantity();
+            currStock += item.getQuantity();
+
+            double currRate = item.getRate();
+            String updateStockQuery = "Update InventoryStock set quantity = ?,rate=?";
+            PreparedStatement preparedStmtUpdateStock = conn.prepareStatement(updateStockQuery);
+            preparedStmtUpdateStock.setInt(1,currStock);
+            preparedStmtUpdateStock.setDouble(2,currRate);
+            preparedStmtUpdateStock.executeUpdate();
 
          }
 

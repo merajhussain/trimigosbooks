@@ -3,12 +3,14 @@ package com.trimigos.models;
 import com.trimigos.db.PurchaseBIllEntityManager;
 import com.trimigos.entity.PurchaseBillEntity;
 import com.trimigos.entity.PurchaseItemEntity;
+import com.trimigos.entity.SkuEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PurchaseBillFormModel {
 
-    public PurchaseBillFormModel(PurchaseBillFormData purchaseBillFormData) {
+    public PurchaseBillFormModel(PurchaseBillFormData purchaseBillFormData, ArrayList<String> skus, HashMap<String, SkuEntity> skuMap) {
         this.purchaseBillFormData = purchaseBillFormData;
 
         PurchaseBillEntity purchaseBillEntity = new PurchaseBillEntity(purchaseBillFormData.getVehicleNumber(),
@@ -21,16 +23,21 @@ public class PurchaseBillFormModel {
 
         ArrayList<PurchaseItemEntity> purchaseItemEntities = new ArrayList<>();
 
+
+
+
         for(var formItem : purchaseBillFormData.getItems() )
         {
-            purchaseItemEntities.add(new PurchaseItemEntity(purchaseBillEntity.getPurchaseBillId(),(int)1,
+            purchaseItemEntities.add(new PurchaseItemEntity(purchaseBillEntity.getPurchaseBillId(),skuMap.get(formItem.getSku()).getId(),
                     formItem.getSku(), formItem.getQuantity(),
                                                             formItem.getRate(),
                                                             formItem.getDiscount(),
                                                             formItem.getTaxableAmount(),
                                                             formItem.getIgstr(),
                                                             formItem.getIgstv(),
-                                                            formItem.getFinalPrice()));
+                                                            formItem.getFinalPrice(),
+                                                            skuMap.get(formItem.getSku()).getQuantity(),
+                                                            skuMap.get(formItem.getSku()).getRate()));
         }
 
 

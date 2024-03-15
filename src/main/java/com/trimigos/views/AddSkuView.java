@@ -32,6 +32,34 @@ public class AddSkuView {
         grid.add(addSkuLabel, 0, 0);
         grid.add(skuField, 1, 0);
 
+
+        TextField skuRateField = new TextField();
+        Label skuRate = new Label("SKU Rate");
+
+        skuRate.getStyleClass().add("sku-label");
+        grid.add(skuRate,0,1);
+        grid.add(skuRateField,1,1);
+
+
+        TextField skuSalePriceField = new TextField();
+        Label skuSalePrice = new Label("Sale Price");
+
+
+
+        skuSalePrice.getStyleClass().add("sku-label");
+        grid.add(skuSalePrice,0,2);
+        grid.add(skuSalePriceField,1,2);
+
+        TextField skuThresholdQuantityField = new TextField();
+        Label skuThresholdQuantity = new Label("ThresholdQuantity");
+
+        skuThresholdQuantity.getStyleClass().add("sku-label");
+        grid.add(skuThresholdQuantity,0,3);
+        grid.add(skuThresholdQuantityField,1,3);
+
+
+
+
         // Set the style for the dialog pane
         dialogAddSku.getDialogPane().setContent(grid);
         dialogAddSku.getDialogPane().getStylesheets().add(getClass().getClassLoader().getResource("skudialog.css").toExternalForm());
@@ -43,7 +71,7 @@ public class AddSkuView {
         // Convert the result to a SKU string when the Add button is clicked
         dialogAddSku.setResultConverter(dialogButton -> {
             if (dialogButton == addButton) {
-                saveSku(skuField.getText());
+                saveSku(skuField.getText(),Double.parseDouble(skuRateField.getText()),Double.parseDouble(skuSalePriceField.getText()), (int) 0, Integer.parseInt(skuThresholdQuantityField.getText()));
             }
             return null;
         });
@@ -54,14 +82,14 @@ public class AddSkuView {
         // Process the result (e.g., add the SKU to the system)
         result.ifPresent(sku -> {
             // Add the SKU to the system or perform other actions as needed
-            saveSku(skuField.getText());
+            saveSku(skuField.getText(),Double.parseDouble(skuRateField.getText()),Double.parseDouble(skuSalePriceField.getText()), (int) 0, Integer.parseInt(skuThresholdQuantityField.getText()));
         });
     }
 
-    public void saveSku(String sku)
+    public void saveSku(String sku,double rate,double salePrice,int quantity,int threasholdStock)
     {
 
-        SkuModel skuModel = new SkuModel(sku);
+        SkuModel skuModel = new SkuModel(sku,rate,salePrice,threasholdStock);
         skuModel.saveSku();
 
 

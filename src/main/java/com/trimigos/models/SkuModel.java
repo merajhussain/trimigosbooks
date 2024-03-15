@@ -9,16 +9,22 @@ import java.util.ArrayList;
 public class SkuModel {
 
     private String sku;
+    private double rate;
+    private double salePrice;
+    private int thresholdQuantity;
 
     private SkuEntityManager skuEntityManager;
 
 
 
 
-    public SkuModel(String sku) {
+    public SkuModel(String sku,double rate,double salePrice, int thresholdQuantity) {
         this.sku = sku;
+        this.rate = rate;
+        this.salePrice = salePrice;
+        this.thresholdQuantity = thresholdQuantity;
 
-        skuEntityManager = new SkuEntityManager(new SkuEntity(this.sku));
+        skuEntityManager = new SkuEntityManager(new SkuEntity(this.sku,this.rate,this.salePrice,this.thresholdQuantity));
 
 
     }

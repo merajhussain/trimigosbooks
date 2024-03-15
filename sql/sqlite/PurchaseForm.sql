@@ -13,7 +13,7 @@ CREATE TABLE PurchaseOrder (
 CREATE TABLE PurchaseItem (
     itemId TEXT PRIMARY KEY,
     purchaseBillId TEXT,
-    skuId INTEGER,
+    skuId TEXT,
 	skuname TEXT,
     quantity REAL,
     rate REAL,
@@ -27,15 +27,16 @@ CREATE TABLE PurchaseItem (
 
 
 CREATE TABLE SKU (
-    id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+    id TEXT PRIMARY KEY  ,
     name TEXT UNIQUE
 );
 
-
 CREATE TABLE InventoryStock (
-    id INTEGER PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     name TEXT UNIQUE,
-	quantity INTEGER 
+        quantity INTEGER DEFAULT 0,
+        rate REAL,
+        saleprice REAL, 
+		thresholdstock INTEGER DEFAULT 0,
+        FOREIGN KEY (id) REFERENCES SKU(id)
 );
-
-

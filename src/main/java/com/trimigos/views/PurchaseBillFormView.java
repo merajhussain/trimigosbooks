@@ -1,6 +1,7 @@
 package com.trimigos.views;
 
 import com.trimigos.db.SkuEntityManager;
+import com.trimigos.entity.SkuEntity;
 import com.trimigos.models.PurchaseBillFormData;
 import com.trimigos.models.PurchaseBillFormModel;
 import com.trimigos.models.PurchaseBillItem;
@@ -26,8 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 public class PurchaseBillFormView {
 
@@ -135,6 +135,8 @@ public class PurchaseBillFormView {
     TextField modeOfTransportField;
     TextField grNoField;
     DatePicker billDatePicker;
+    HashMap<String,SkuEntity> skuMap;
+    ArrayList<String> skus;
 
 
 
@@ -145,6 +147,10 @@ public class PurchaseBillFormView {
         formStage.setTitle("Inventory/Purchase bill Form");
 
 
+        skuMap = new HashMap<>();
+        skus = new ArrayList<>();
+
+        getSkus();
         totalPrice =0.0;
 
         // Add a label to display the total price
@@ -291,7 +297,7 @@ public class PurchaseBillFormView {
 
         purchaseBillFormData.setTotalBillValue(totalPrice);
 
-        PurchaseBillFormModel purchaseBillFormModel = new PurchaseBillFormModel(purchaseBillFormData);
+        PurchaseBillFormModel purchaseBillFormModel = new PurchaseBillFormModel(purchaseBillFormData,skus,skuMap);
         purchaseBillFormModel.SavePurchaseBill();
 
         formStage.close();
@@ -321,7 +327,7 @@ public class PurchaseBillFormView {
         skuComboBox.setEditable(true);
 
 
-        ObservableList<String> skuItems = FXCollections.observableList(getSkus());
+        ObservableList<String> skuItems = FXCollections.observableList(skus);
         skuComboBox.setItems(skuItems);
         //Filter items based on user input
         skuComboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -416,19 +422,23 @@ public class PurchaseBillFormView {
 
     }
 
-    ArrayList<String> getSkus()
+    void getSkus()
     {
+        skuMap.clear();
+        skus.clear();
         SkuModel skuModel = new SkuModel();
 
         var skuEntities = skuModel.getAllSkus();
 
-        ArrayList<String> skus = new ArrayList<>();
+
         for(var sku : skuEntities)
         {
-            skus.add(sku.getSku());
+            skus.add(sku.getSkuName());
+
+            skuMap.put(sku.getSkuName(),sku);
         }
 
-        return  skus;
+
 
     }
 

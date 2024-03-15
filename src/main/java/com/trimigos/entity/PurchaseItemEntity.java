@@ -20,13 +20,8 @@ public class PurchaseItemEntity {
         this.purchaseBillId = purchaseBillId;
     }
 
-    public int getSku() {
-        return sku;
-    }
 
-    public void setSku(int sku) {
-        this.sku = sku;
-    }
+
 
     public double getQuantity() {
         return quantity;
@@ -86,7 +81,16 @@ public class PurchaseItemEntity {
 
     private String itemID;
     private String purchaseBillId;
-    private int sku;
+
+    public String getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(String skuId) {
+        this.skuId = skuId;
+    }
+
+    private String skuId;
 
     public String getSkuName() {
         return skuName;
@@ -95,6 +99,14 @@ public class PurchaseItemEntity {
     public void setSkuName(String skuName) {
         this.skuName = skuName;
     }
+    public int getCurrStockQuantity() {
+        return currStockQuantity;
+    }
+
+    public void setCurrStockQuantity(int currStockQuantity) {
+        this.currStockQuantity = currStockQuantity;
+    }
+
 
     private String skuName;
     private double quantity;
@@ -105,9 +117,22 @@ public class PurchaseItemEntity {
     private double igstv;
     private double finalPrice;
 
-    public PurchaseItemEntity(String purchaseBillId, int sku, String skuName, double quantity, double rate, double discount, double taxableAmount, double igstr, double igstv, double finalPrice) {
+
+    private int currStockQuantity;
+
+    public double getCurrRate() {
+        return currRate;
+    }
+
+    public void setCurrRate(double currRate) {
+        this.currRate = currRate;
+    }
+
+    private double currRate;
+
+    public PurchaseItemEntity(String purchaseBillId, String skuId, String skuName, double quantity, double rate, double discount, double taxableAmount, double igstr, double igstv, double finalPrice,int currStockQuantity,double currRate) {
         this.purchaseBillId = purchaseBillId;
-        this.sku = sku;
+        this.skuId = skuId;
         this.skuName = skuName;
         this.quantity = quantity;
         this.rate = rate;
@@ -116,6 +141,8 @@ public class PurchaseItemEntity {
         this.igstr = igstr;
         this.igstv = igstv;
         this.finalPrice = finalPrice;
+        this.currStockQuantity = currStockQuantity;
+        this.currRate = currRate;
         this.itemID = UUID.randomUUID().toString();
     }
 }

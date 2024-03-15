@@ -13,6 +13,40 @@ public class PurchaseBillItem {
     private double igstr;
     private double igstv;
     private double FinalPrice;
+    private int currQuantity;
+
+    public PurchaseBillItem(String sku, double quantity, double rate, double discount, double taxableAmount, double igstr, double igstv, double finalPrice, int currQuantity, String skuId) {
+        this.sku = sku;
+        this.quantity = quantity;
+        this.rate = rate;
+        this.discount = discount;
+        this.taxableAmount = taxableAmount;
+        this.igstr = igstr;
+        this.igstv = igstv;
+        FinalPrice = finalPrice;
+        this.currQuantity = currQuantity;
+        this.skuId = skuId;
+    }
+
+    public int getCurrQuantity() {
+        return currQuantity;
+    }
+
+    public void setCurrQuantity(int currQuantity) {
+        this.currQuantity = currQuantity;
+    }
+
+
+
+    public String getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(String skuId) {
+        this.skuId = skuId;
+    }
+
+    private String skuId;
 
 
     public PurchaseBillItem(String sku, double quantity, double rate, double discount, double taxableAmount, double igstr, double igstv, double finalPrice) {
