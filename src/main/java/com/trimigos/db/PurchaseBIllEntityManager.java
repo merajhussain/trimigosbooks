@@ -34,6 +34,7 @@ public class PurchaseBIllEntityManager {
          conn = DriverManager.getConnection(url);
          PreparedStatement preparedStatement = conn.prepareStatement(insertPurchaseOrderQuery);
 
+
          conn.setAutoCommit(false);
 
          preparedStatement.setString(1,purchaseBill.getPurchaseBillId());
@@ -68,17 +69,19 @@ public class PurchaseBIllEntityManager {
             currStock += item.getQuantity();
 
             double currRate = item.getRate();
-            String updateStockQuery = "Update InventoryStock set quantity = ?,rate=?";
+            String updateStockQuery = "Update InventoryStock set quantity=?,rate=? where id=?";
             PreparedStatement preparedStmtUpdateStock = conn.prepareStatement(updateStockQuery);
             preparedStmtUpdateStock.setInt(1,currStock);
             preparedStmtUpdateStock.setDouble(2,currRate);
+            preparedItemStatement.setString(3,item.getSkuId());
             preparedStmtUpdateStock.executeUpdate();
+            conn.commit();
 
          }
 
 
 
-         conn.commit();
+
          System.out.println("Purchase Order "+purchaseBill.getPurchaseBillId()+" persisted successfully");
          conn.close();
 

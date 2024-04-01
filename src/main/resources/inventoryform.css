@@ -1,0 +1,14 @@
+.table-row-cell:odd {
+    -fx-background-color: white;
+}
+
+.table-row-cell:even {
+    -fx-background-color: gold;
+}
+.vbox-form {
+    -fx-background-color: indigo;
+}
+
+.inventory-label{
+ color: white;
+}
