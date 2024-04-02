@@ -54,6 +54,12 @@ public class InventoryView {
         addSkuBtn.setOnAction(e -> addSkuForm());
 
 
+        viewInventoryBtn.setOnAction(e -> {
+            InventoryViewForm inventoryViewForm = new InventoryViewForm();
+            inventoryViewForm.show();
+        });
+
+
         // Add UI components for adding inventory...
         addInventoryView.getChildren().addAll(gridPane);
         root.setCenter(addInventoryView);

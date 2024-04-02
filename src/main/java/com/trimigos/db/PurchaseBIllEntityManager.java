@@ -73,7 +73,7 @@ public class PurchaseBIllEntityManager {
             PreparedStatement preparedStmtUpdateStock = conn.prepareStatement(updateStockQuery);
             preparedStmtUpdateStock.setInt(1,currStock);
             preparedStmtUpdateStock.setDouble(2,currRate);
-            preparedItemStatement.setString(3,item.getSkuId());
+            preparedStmtUpdateStock.setString(3,item.getSkuId());
             preparedStmtUpdateStock.executeUpdate();
             conn.commit();
 
