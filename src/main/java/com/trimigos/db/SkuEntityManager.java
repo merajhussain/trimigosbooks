@@ -159,4 +159,42 @@ public class SkuEntityManager {
 
         return skuEntity;
     }
+
+
+    public ArrayList<SkuEntity> fetchLowStockSkus() {
+        try {
+            skuEntities.clear();
+            Connection conn = null;
+            Class.forName("org.sqlite.JDBC");
+            // db parameters
+            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            if (conn != null) {
+                Statement statement = conn.createStatement();
+                String query = "SELECT * FROM InventoryStock where quantity<thresholdstock";
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    String skuId = resultSet.getString("id");
+                    String skuName = resultSet.getString("name");
+                    double rate = resultSet.getDouble("rate");
+                    double salePrice = resultSet.getDouble("saleprice");
+                    int quantity = resultSet.getInt("quantity");
+                    int threasholdQuanity = resultSet.getInt("thresholdstock");
+
+
+                    skuEntities.add(new SkuEntity(skuId,skuName,rate,salePrice,quantity,threasholdQuanity));
+                }
+
+                System.out.println("  low stock skus fetched succesfully");
+                conn.close();
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return  skuEntities;
+    }
 }

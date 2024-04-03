@@ -2,6 +2,8 @@ package com.trimigos.views;
 
 import com.trimigos.controllers.LoginController;
 import com.trimigos.db.OrdersEntityManager;
+import com.trimigos.db.SkuEntityManager;
+import com.trimigos.entity.SkuEntity;
 import com.trimigos.models.DashBoardModel;
 import com.trimigos.models.DataEntity;
 import com.trimigos.models.LoginModel;
@@ -145,22 +147,21 @@ public class DashBoardView {
     }
 
 
-    private TableView<DataEntity> createTableView() {
-        TableView<DataEntity> tableView = new TableView<>();
+    private TableView<SkuEntity> createTableView() {
+        TableView<SkuEntity> tableView = new TableView<>();
 
-        TableColumn<DataEntity, String> nameColumn = new TableColumn<>("SKU");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        SkuEntityManager skuEntityManager = new SkuEntityManager();
 
-        TableColumn<DataEntity, Integer> valueColumn = new TableColumn<>("Quantity");
-        valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        TableColumn<SkuEntity, String> nameColumn = new TableColumn<>("SKU");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("skuName"));
+
+        TableColumn<SkuEntity, Integer> valueColumn = new TableColumn<>("Quantity");
+        valueColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tableView.getColumns().addAll(nameColumn, valueColumn);
 
-        ObservableList<DataEntity> data = FXCollections.observableArrayList(
-                new DataEntity("Entity 1", 10),
-                new DataEntity("Entity 2", 20),
-                new DataEntity("Entity 3", 30),
-                new DataEntity("Entity 4", 40)
+        ObservableList<SkuEntity> data = FXCollections.observableArrayList(
+                skuEntityManager.fetchLowStockSkus()
         );
 
         tableView.setItems(data);
