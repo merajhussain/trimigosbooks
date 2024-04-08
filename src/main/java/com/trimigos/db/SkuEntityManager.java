@@ -41,7 +41,7 @@ public class SkuEntityManager {
 
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             conn.setAutoCommit(false);
@@ -87,7 +87,7 @@ public class SkuEntityManager {
             Connection conn = null;
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             if (conn != null) {
@@ -127,7 +127,7 @@ public class SkuEntityManager {
             Connection conn = null;
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             if (conn != null) {
@@ -167,7 +167,7 @@ public class SkuEntityManager {
             Connection conn = null;
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             if (conn != null) {

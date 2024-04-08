@@ -29,7 +29,7 @@ public class PurchaseBIllEntityManager {
 
          Class.forName("org.sqlite.JDBC");
          // db parameters
-         String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+         String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
          // create a connection to the database
          conn = DriverManager.getConnection(url);
          PreparedStatement preparedStatement = conn.prepareStatement(insertPurchaseOrderQuery);

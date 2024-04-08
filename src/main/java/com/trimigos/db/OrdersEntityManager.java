@@ -32,7 +32,7 @@ public class OrdersEntityManager {
         try {
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             connection = DriverManager.getConnection(url);
 
@@ -102,7 +102,7 @@ public class OrdersEntityManager {
 
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             System.out.println("Getting all pending orders");
@@ -147,7 +147,7 @@ public class OrdersEntityManager {
 
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
 
@@ -193,7 +193,7 @@ public class OrdersEntityManager {
 
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
@@ -255,7 +255,7 @@ public class OrdersEntityManager {
 
             Class.forName("org.sqlite.JDBC");
             // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/dbs/orderdb.db";
+            String url = "jdbc:sqlite:C:/trimigosbooks/sqlite/dbs/orderdb.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(insertOrUpdateQuery);
