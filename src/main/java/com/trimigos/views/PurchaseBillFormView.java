@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -252,6 +253,8 @@ public class PurchaseBillFormView {
 
         itemTable.setItems(itemList);
 
+        setupEnterKeyNavigation();
+
         Button addButton = ViewUtils.createSyledButton("ADD", FontAwesomeIcon.PLUS, Color.DARKGRAY, "2em", "add-button");
         addButton.setOnAction(e -> addItem(itemTable));
 
@@ -442,6 +445,38 @@ public class PurchaseBillFormView {
 
     }
 
+    private void setupEnterKeyNavigation() {
+        vehicleNoField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                carrierNameField.requestFocus();
+            }
+        });
+
+        carrierNameField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                modeOfTransportField.requestFocus();
+            }
+        });
+
+        modeOfTransportField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                grNoField.requestFocus();
+            }
+        });
+
+        grNoField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                billDatePicker.requestFocus();
+            }
+        });
+
+        // If the last field is focused, pressing Enter will add the item
+        billDatePicker.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                addItem(itemTable);
+            }
+        });
+    }
     public void showForm() {
         this.formStage.show();
     }
