@@ -147,7 +147,7 @@ public class DashBoardView {
     }
 
 
-    private TableView<SkuEntity> createTableView() {
+    private TableView<SkuEntity> lowStockTableView() {
         TableView<SkuEntity> tableView = new TableView<>();
 
         SkuEntityManager skuEntityManager = new SkuEntityManager();
@@ -168,6 +168,7 @@ public class DashBoardView {
 
         return tableView;
     }
+
 
 
     public TableView<OrderEntity> createOrderTableView() {
@@ -269,6 +270,7 @@ public class DashBoardView {
             Platform.runLater(() -> {
                 ordersTableView.getItems().clear();
                 ordersTableView.setItems(model.getPendingOrder());
+                lowStockTableView();
             });
         });
 
@@ -318,7 +320,7 @@ public class DashBoardView {
         VBox tableView1Box = new VBox(10);
         Label tableView1Label = new Label("Low on Stock  ");
         tableView1Label.getStyleClass().add("section-label");
-        tableView1Box.getChildren().addAll(tableView1Label, createTableView());
+        tableView1Box.getChildren().addAll(tableView1Label, lowStockTableView());
 
         VBox ordersViewBox = new VBox(10);
         Label tableView2Label = new Label("Orders to Deliver");
@@ -333,12 +335,12 @@ public class DashBoardView {
         VBox tableView3Box = new VBox(10);
         Label tableView3Label = new Label("Table View 3");
         tableView3Box.getStyleClass().add("section-label");
-        tableView3Box.getChildren().addAll(tableView3Label, createTableView());
+     //   tableView3Box.getChildren().addAll(tableView3Label, createTableView());
 
         VBox tableView4Box = new VBox(10);
         Label tableView4Label = new Label("Table View 4");
         tableView4Label.getStyleClass().add("section-label");
-        tableView4Box.getChildren().addAll(tableView4Label, createTableView());
+       // tableView4Box.getChildren().addAll(tableView4Label, createTableView());
 
         HBox row2 = new HBox(10);
         row2.getChildren().addAll(tableView3Box, tableView4Box);

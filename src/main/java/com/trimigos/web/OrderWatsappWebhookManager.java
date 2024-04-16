@@ -99,26 +99,22 @@ public class OrderWatsappWebhookManager {
             System.out.println("Order ID: " + orderId);
             System.out.println("Message: " + orderMessage);
 
-            String [] orders = orderMessage.split(" ");
+            String [] orders = orderMessage.split("\n");
+
+            String orderHeader = orders[0];
+
+            String[] details = orderHeader.split(" ");
 
 
-                if( orders.length == 3)
-                {
+            String  location =  details[1];
+            String customerName = details[2];
 
-                    String  location =  orders[1];
-                    String customerOrder = orders[2];
-
-                    String replacecustomerOrder =customerOrder.replaceAll("\\\n","_");
-
-                    String [] splitCucsomterOrder = replacecustomerOrder.split("_");
-
-                    String customerName = splitCucsomterOrder[0];
 
                     String items="";
 
-                    for(int itemIndex=1;itemIndex<splitCucsomterOrder.length;itemIndex++)
+                    for(int itemIndex=1;itemIndex<orders.length;itemIndex++)
                     {
-                        items += splitCucsomterOrder[itemIndex]+",";
+                        items += orders[itemIndex]+",";
                     }
 
                     items = items.substring(0, items.length()-1); // remove last character
@@ -127,7 +123,7 @@ public class OrderWatsappWebhookManager {
 
                     ordersEntityManager.AddOrder(orderId,customerName,location,items);
 
-                }
+
 
 
         }
