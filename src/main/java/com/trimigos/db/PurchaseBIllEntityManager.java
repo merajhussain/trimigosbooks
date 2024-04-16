@@ -75,12 +75,12 @@ public class PurchaseBIllEntityManager {
             preparedStmtUpdateStock.setDouble(2,currRate);
             preparedStmtUpdateStock.setString(3,item.getSkuId());
             preparedStmtUpdateStock.executeUpdate();
-            conn.commit();
+
 
          }
 
 
-
+         conn.commit();
 
          System.out.println("Purchase Order "+purchaseBill.getPurchaseBillId()+" persisted successfully");
          conn.close();
