@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 public class OrderWatsappWebhookManager {
 
     private List<OrderEntity> orders;
+    private static int OK_RESPONSE=200;
 
     public  void pullOrders( ) {
         try {
@@ -147,6 +148,11 @@ public class OrderWatsappWebhookManager {
             // Get the response code
             int responseCode = connection.getResponseCode();
             System.out.println("Response Code: " + responseCode);
+
+            if( responseCode == OK_RESPONSE )
+            {
+                System.out.println("Orders cleared from the server successfully");
+            }
 
 
             // Close the connection
